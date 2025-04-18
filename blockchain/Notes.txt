@@ -1,0 +1,11 @@
+npx hardhat compile
+npx hardhat test
+npx hardhat run scripts/deploy.js
+
+npx hardhat node
+npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run scripts/deploy.js --network linea_sepolia
+
+
+Deploying contracts with: 0x6062dA5f7251cc31a17637cc4bc4d0fd289565dB
+BloodDonation deployed to: 0xBa1BF52799d5Fc231117AC2c728AEAb4835D3416
