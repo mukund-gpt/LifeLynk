@@ -18,5 +18,13 @@ export const registerUser = async (formData, role) => {
   return response.data;
 };
 
+//fetch current user 
+export const fetchCurrentUser = async () => {
+  const res = await axios.get("/api/v1/users/");
+  return res.data;
+};
+
+
+
 
 
