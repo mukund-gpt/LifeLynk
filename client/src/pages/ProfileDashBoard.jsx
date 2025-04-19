@@ -8,17 +8,20 @@ import {
   Button,
 } from "@mui/material";
 import { Routes, Route, Navigate, useLocation, Link, useNavigate } from "react-router-dom";
-
 import DonorProfile from "./Profile";
 import EditProfile from "./EditProfile";
 import NewRequirements from "./NewRequirements";
 import Donated from "./Donated";
 import { logoutUser } from "../apis/userApi";
 import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux"; 
+import { setUser } from "../redux/AuthSlice"; 
 
 const ProfileDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch(); 
+  const user = useSelector((state) => state.auth.user); 
 
   const menu = [
     { label: "Profile", path: "/dashboard/profile" },
@@ -30,15 +33,19 @@ const ProfileDashboard = () => {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      localStorage.removeItem("user");
+      dispatch(setUser(null)); 
       navigate("/login");
       toast.success("Logout successful");
     } catch (error) {
-      alert("Logout failed");
       toast.error("Logout failed");
       console.error("Logout error:", error);
     }
   };
+
+  // If no user, navigate to login page
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <Box display="flex" minHeight="100vh">

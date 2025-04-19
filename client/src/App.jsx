@@ -1,10 +1,7 @@
-import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./redux/AuthSlice";  
 
 import HospitalProfile from "./pages/HospitalProfile";
 import HospitalRequests from "./pages/HospitalRequests";
@@ -16,12 +13,25 @@ import ProfileDashboard from "./pages/ProfileDashBoard";
 import Navbar from "./components/navbar";
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user); 
   const role = user?.role;
+
+  useEffect(() => {
+    // Check if user data exists in localStorage
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+      dispatch(setUser(JSON.parse(savedUser))); // Dispatch to Redux store
+    }
+  }, [dispatch]);
+
+  if (user === undefined) {
+    return <div className="p-8 text-center">Loading...</div>;
+  }
 
   return (
     <Router>
-      <Navbar/>
+      <Navbar />
       <Routes>
         {/* Landing Route */}
         <Route
@@ -41,12 +51,36 @@ const App = () => {
           }
         />
 
-        {/* Public Routes */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login setUser={setUser} />} />
+        {/* 🔒 Public Routes (Redirect to dashboard if logged in) */}
+        <Route
+          path="/register"
+          element={
+            user ? (
+              <Navigate
+                to={role === "hospital" ? "/hospitalProfile" : "/dashboard/profile"}
+              />
+            ) : (
+              <Register />
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            user ? (
+              <Navigate
+                to={role === "hospital" ? "/hospitalProfile" : "/dashboard/profile"}
+              />
+            ) : (
+              <Login />
+            )
+          }
+        />
+
+        {/* Test Route */}
         <Route path="/test" element={<Contract />} />
 
-        {/* Hospital Protected Routes */}
+        {/* 🏥 Hospital Protected Routes */}
         {user && role === "hospital" && (
           <>
             <Route path="/hospitalProfile" element={<HospitalProfile />} />
@@ -55,12 +89,12 @@ const App = () => {
           </>
         )}
 
-        {/* Donor Protected Route */}
+        {/* 💉 Donor Protected Route */}
         {user && role === "donor" && (
           <Route path="/dashboard/*" element={<ProfileDashboard />} />
         )}
 
-        {/* Catch-all Route */}
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
       </Routes>
     </Router>

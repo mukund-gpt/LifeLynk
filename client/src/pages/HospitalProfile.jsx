@@ -18,6 +18,7 @@ import {
   TextField,
 } from "@mui/material";
 import LoadingPage from "../components/loading";
+import { toast } from "react-hot-toast";
 
 const HospitalProfile = () => {
   const [showLicenseForm, setShowLicenseForm] = useState(false);
