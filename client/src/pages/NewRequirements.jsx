@@ -37,6 +37,7 @@ const NewRequirements = () => {
   const fetchRequirements = async () => {
     try {
       const data = await getAllOpenRequests();
+      console.log(data);
       setRequirements(data.requests);
       setError(null);
     } catch (err) {
@@ -165,6 +166,10 @@ const NewRequirements = () => {
               <Typography variant="body2">
                 Email: {selectedReq.hospital.email}
               </Typography>
+              <Typography variant="body2">
+                Contact: {selectedReq.hospital.contact}
+              </Typography>
+
 
               <Typography variant="subtitle1" fontWeight="bold" mt={2}>
                 Patient Contact:

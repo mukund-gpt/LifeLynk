@@ -90,7 +90,7 @@ export const getAllRequestsForHospital = async (req, res) => {
     const hospitalId = req.user._id;
     // console.log(req);
     const requests = await BloodRequest.find({ hospital: hospitalId })
-      .populate("hospital", "name location")
+      .populate("hospital", "name location ")
       .populate("donor");
 
     // Respond with the blood requests
@@ -111,7 +111,7 @@ export const getAllOpenRequests = async (req, res) => {
   try {
     const requests = await BloodRequest.find({ status: "open" }).populate(
       "hospital",
-      "name location"
+      "hospitalName location email contact"
     );
 
     res.status(200).json({
