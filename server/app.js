@@ -7,6 +7,8 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import userRouter from "./routes/userRoutes.js";
+import requestRotuer from "./routes/requestRoutes.js";
 
 // import { fileURLToPath } from "url"
 dotenv.config({ path: "./config.env" });
