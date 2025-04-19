@@ -1,5 +1,4 @@
 import { useState } from "react";
-import toast from 'react-hot-toast';
 import axios from "axios";
 import {
     Dialog,
@@ -34,11 +33,11 @@ const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
                 id
             });
             setLoading(false);
-            toast.success('Request edited successfully!');
+            toast.success("Request edit successfully")
         } catch (error) {
             console.log("error: ", error.message);
-            toast.error('Error in editing request!');
             setLoading(false);
+            toast.error("Error in edit request")
         } finally {
             closeRequestFormDialog();
         }

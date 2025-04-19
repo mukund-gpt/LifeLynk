@@ -33,7 +33,7 @@ const HospitalProfile = () => {
         setProfileData(res.data.data.hospital);
       } catch (err) {
         console.error("Error fetching profile data:", err);
-        toast.error('Error in fetching profile data!');
+        toast.error("Error in fetching profile")
       } finally {
         setLoading(false);
       }

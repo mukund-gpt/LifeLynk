@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
 import axios from "axios";
 import {
     Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer,
@@ -39,11 +38,10 @@ const HospitalRequests = () => {
             try {
                 setLoading(true)
                 const res = await axios.get("/api/v1/requests/getAll");
-                console.log("resBody: ", res)
                 setRequests(res.data.requests);
             } catch (err) {
                 console.error("Error fetching blood requests:", err);
-                toast.error('Error in fetching requests!');
+                toast.error("Error in fetching requests")
             } finally{
                 setLoading(false);
             }
@@ -62,10 +60,10 @@ const HospitalRequests = () => {
                 });
 
                 setRequests((prev) => prev.filter(req => req._id !== id));
-                toast.success('Request deleted successfully!');
+                toast.success("Request deleted successfully")
             } catch (err) {
                 console.log("error: ", err.message);
-                toast.error('Error in deleting request!');
+                toast.error("Error in deleting request")
             } finally{
                 setLoading(false);
             }

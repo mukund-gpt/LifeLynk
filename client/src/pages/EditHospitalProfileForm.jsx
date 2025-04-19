@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from 'react-hot-toast';
+import {toast} from 'react-hot-toast';
 import axios from "axios";
 import {
     Dialog,
@@ -29,15 +29,14 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }
                 profile
             })
             setProfileData(res.data.data.user)
-            toast.success('Profile edit successfully !');
+            toast.success("Profile edit successfully")
         } catch (err) {
             console.log("error: ", err.message)
-            toast.success('Error in edit profile !');
+            toast.error("Error in edit profile")
         } finally{
             setLoading(false);
             closeProfileEditFormDialog()
         }
-        closeProfileEditFormDialog(); // Close the form dialog
     };
 
     return (

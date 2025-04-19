@@ -1,5 +1,4 @@
 import { useState } from "react";
-import toast from 'react-hot-toast';
 import axios from "axios"
 import {
     Dialog,
@@ -35,7 +34,7 @@ const RequestForm = ({ closeRequestFormDialog }) => {
             const res = await axios.post("/api/v1/requests/", {
                 request
             })
-            toast.success('Request created successfully!');
+            toast.success("Request created successfully")
         } catch (err) {
             console.log("error: ", err.message)
             toast.error("Error in creating request")
