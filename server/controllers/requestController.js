@@ -33,13 +33,14 @@ export const updateRequest = async (req, res, next) => {
     const update = { ...filteredBody };
 
     if (status === 'booked') {
-      update.$addToSet = { donors: req.user._id }; // Ensure donor is added only once
+      update.donor = req.user._id; // Assign the donor directly
     }
 
     if (status === 'open' && req.user.role === 'hospital') {
-      // Clear donor list
-      update.$set = { donors: [] };
+      // Clear the donor reference
+      update.donor = null;
     }
+
     const updatedRequest = await BloodRequest.findByIdAndUpdate(id, update, {
       new: true,
       runValidators: true,

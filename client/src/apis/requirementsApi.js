@@ -10,7 +10,7 @@ export const createRequirement = async (formData) => {
   return response.data;
 }
 export const getAllOpenRequests = async () => {
-  const response = await axios.get("/api/v1/requests/open");
+  const response = await axios.get("/api/v1/requests");
   return response.data;
 }
 // export const updateRequirement = async (formData) => {      

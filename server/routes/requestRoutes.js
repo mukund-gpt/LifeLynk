@@ -19,8 +19,9 @@ router.use(protect);
 router.get("/", getAllOpenRequests);
 router.patch("/status", updateRequestStatus);
 
-//restricted for hospital
+
 router.patch("/", updateRequest);
+//restricted for hospital
 router.use(restrictTo("hospital"));
 router.get("/getAll", getAllRequestsForHospital);
 router.post("/", createRequestAndSendEmail);
