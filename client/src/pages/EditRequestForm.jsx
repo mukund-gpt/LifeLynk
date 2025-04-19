@@ -12,9 +12,11 @@ import {
     InputLabel,
     FormControl,
 } from "@mui/material";
+import LoadingPage from "../components/loading";
 
 const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
     const [request, setRequest] = useState(requestData);
+    const [loading, setLoading] = useState(false);
 
     const handleInputChange = (field, value) => {
         setRequest(prev => ({
@@ -25,19 +27,25 @@ const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
 
     const handleEditRequestFormSubmit = async () => {
         try {
+            setLoading(true);
             const res = await axios.patch("/api/v1/requests/", {
                 ...request,
                 id
             });
-            console.log("res: ", res);
+            setLoading(false);
+            toast.success("Request edit successfully")
         } catch (error) {
             console.log("error: ", error.message);
+            setLoading(false);
+            toast.error("Error in edit request")
+        } finally {
+            closeRequestFormDialog();
         }
-        closeRequestFormDialog();
     };
 
     return (
         <Dialog open={true} onClose={closeRequestFormDialog}>
+            {loading && <LoadingPage />}
             <DialogTitle>Edit Request</DialogTitle>
             <DialogContent>
                 <TextField
@@ -61,13 +69,23 @@ const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
                     value={request.age}
                     onChange={(e) => handleInputChange("age", e.target.value)}
                 />
-                <TextField
-                    margin="dense"
-                    label="Blood Group"
-                    fullWidth
-                    value={request.bloodGroup}
-                    onChange={(e) => handleInputChange("bloodGroup", e.target.value)}
-                />
+                <FormControl fullWidth margin="dense">
+                    <InputLabel>Blood Group</InputLabel>
+                    <Select
+                        value={request.bloodGroup}
+                        label="Blood Group"
+                        onChange={(e) => handleInputChange("bloodGroup", e.target.value)}
+                    >
+                        <MenuItem value="A+">A+</MenuItem>
+                        <MenuItem value="A-">A-</MenuItem>
+                        <MenuItem value="B+">B+</MenuItem>
+                        <MenuItem value="B-">B-</MenuItem>
+                        <MenuItem value="AB+">AB+</MenuItem>
+                        <MenuItem value="AB-">AB-</MenuItem>
+                        <MenuItem value="O+">O+</MenuItem>
+                        <MenuItem value="O-">O-</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     margin="dense"
                     label="Units Required"

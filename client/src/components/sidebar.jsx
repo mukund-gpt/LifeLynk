@@ -29,7 +29,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={toggleSidebar}
-          className="p-3 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none transition duration-300"
+          className="p-1 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 focus:outline-none transition duration-300"
         >
           {isCollapsed ? (
             <FiMenu className="w-4 h-4" />

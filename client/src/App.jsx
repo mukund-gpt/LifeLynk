@@ -13,6 +13,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Contract from "./test/Contract";
 import ProfileDashboard from "./pages/ProfileDashBoard";
+import Navbar from "./components/navbar";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -20,6 +21,7 @@ const App = () => {
 
   return (
     <Router>
+      <Navbar/>
       <Routes>
         {/* Landing Route */}
         <Route

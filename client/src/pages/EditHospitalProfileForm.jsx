@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {toast} from 'react-hot-toast';
 import axios from "axios";
 import {
     Dialog,
@@ -8,9 +9,11 @@ import {
     TextField,
     Button,
 } from "@mui/material";
+import LoadingPage from "../components/loading";
 
 const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }) => {
     const [profile, setProfile] = useState(details);
+    const [loading, setLoading] = useState(false)
 
     const handleInputChange = (field, value) => {
         setProfile(prev => ({
@@ -21,14 +24,19 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }
 
     const handleProfileFormSubmit = async () => {
         try {
+            setLoading(true)
             const res = await axios.patch("/api/v1/users/updateHospital", {
                 profile
             })
             setProfileData(res.data.data.user)
+            toast.success("Profile edit successfully")
         } catch (err) {
             console.log("error: ", err.message)
+            toast.error("Error in edit profile")
+        } finally{
+            setLoading(false);
+            closeProfileEditFormDialog()
         }
-        closeProfileEditFormDialog(); // Close the form dialog
     };
 
     return (
@@ -37,6 +45,7 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }
             onClose={closeProfileEditFormDialog}
             aria-labelledby="edit-profile-form-dialog-title"
         >
+            {loading && <LoadingPage/>}
             <DialogTitle id="edit-profile-form-dialog-title">Edit Profile</DialogTitle>
             <DialogContent>
                 <TextField
@@ -65,7 +74,7 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }
                     type="tel"
                     fullWidth
                     value={profile.contact}
-                    onChange={(e) => handleInputChange("contactNo", e.target.value)}
+                    onChange={(e) => handleInputChange("contact", e.target.value)}
                 />
             </DialogContent>
             <DialogActions>

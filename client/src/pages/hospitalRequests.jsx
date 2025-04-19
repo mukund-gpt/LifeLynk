@@ -14,12 +14,14 @@ import RequestForm from "./RequestForm";
 import Open from '../components/HospitalRquests/open';
 import Booked from '../components/HospitalRquests/booked';
 import Closed from '../components/HospitalRquests/closed';
+import LoadingPage from '../components/loading';
 
 const HospitalRequests = () => {
     const [showEditRequestForm, setShowEditRequestForm] = useState(false);
     const [showRequestForm, setShowRequestForm] = useState(false);
     const [requestFormIdx, setRequestFormIdx] = useState(-1);
     const [tabIndex, setTabIndex] = useState(0); // For tab control
+    const [loading, setLoading] = useState(false)
 
     const openRequestFormDialog = () => {
         setShowRequestForm(true);
@@ -34,11 +36,14 @@ const HospitalRequests = () => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
+                setLoading(true)
                 const res = await axios.get("/api/v1/requests/getAll");
-                console.log("resBody: ", res.data.requests)
                 setRequests(res.data.requests);
             } catch (err) {
                 console.error("Error fetching blood requests:", err);
+                toast.error("Error in fetching requests")
+            } finally{
+                setLoading(false);
             }
         };
 
@@ -49,13 +54,18 @@ const HospitalRequests = () => {
         const confirmed = window.confirm("Are you sure you want to delete this request?");
         if (confirmed) {
             try {
+                setLoading(true)
                 await axios.delete("/api/v1/requests/", {
                     data: { id }
                 });
 
                 setRequests((prev) => prev.filter(req => req._id !== id));
+                toast.success("Request deleted successfully")
             } catch (err) {
                 console.log("error: ", err.message);
+                toast.error("Error in deleting request")
+            } finally{
+                setLoading(false);
             }
         }
     };
@@ -66,6 +76,7 @@ const HospitalRequests = () => {
 
     return (
         <>
+            {loading && <LoadingPage/>}
             {showRequestForm && (
                 <RequestForm closeRequestFormDialog={closeRequestFormDialog} />
             )}
