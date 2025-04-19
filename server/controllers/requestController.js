@@ -1,6 +1,42 @@
 import BloodRequest from "../models/requestModel.js";
 import * as factory from "./handlerFactory.js";
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
+export const updateRequest = async (req, res, next) => {
+  try {
+    const { id } = req.body
+    const filteredBody = filterObj(
+      req.body,
+      'patientName',
+      'contactNumber',
+      'age',
+      'unitsRequired',
+      'bloodGroup'
+    );
+
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(id, filteredBody, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        request: updatedRequest,
+      },
+    });
+  } catch (err) {
+    console.log("err: ", err.message)
+  }
+};
+
 export const createRequest = async (req, res) => {
   try {
     const { patientName, contactNumber, bloodGroup, unitsRequired } = req.body;
@@ -92,8 +128,6 @@ export const getAllOpenRequests = async (req, res) => {
 };
 
 export const getAllRequests = factory.getAll(BloodRequest);
-export const deleteRequest = factory.deleteOne(BloodRequest);
-export const updateRequest = factory.updateOne(BloodRequest);
 
 import User from "../models/userModel.js";
 import Hospital from "../models/hospitalModel.js";
@@ -145,5 +179,17 @@ export const sendEmailToDonors = async (req, res, next) => {
       status: "fail",
       message: error.message,
     });
+  }
+};
+
+export const deleteRequest = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await BloodRequest.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Deleted successfully" });
+  } catch (err) {
+    console.log("error: ", err.message);
+    return res.status(500).json({ message: "Server error" });
+
   }
 };
