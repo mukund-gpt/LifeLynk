@@ -8,7 +8,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
-import requestRotuer from "./routes/requestRoutes.js";
+import requestRouter from "./routes/requestRoutes.js";
+// import AppError from "./utils/appError.js";
+import globalErrorHandler from "./controllers/errorController.js";
 
 // import { fileURLToPath } from "url"
 dotenv.config({ path: "./config.env" });
@@ -69,7 +71,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/users", userRouter);
-app.use("/api/v1/requests", requestRotuer);
+app.use("/api/v1/requests", requestRouter);
 
 // Error handling for routes that don't exist
 // app.all("*", (req, res, next) => {
@@ -77,6 +79,6 @@ app.use("/api/v1/requests", requestRotuer);
 // });
 
 // Error handling middleware
-// app.use(globalErrorHandler);
+app.use(globalErrorHandler);
 
 export default app;

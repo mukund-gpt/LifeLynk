@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Card, Typography } from "@mui/material";
 import { loginUser } from "../apis/userApi";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -14,11 +15,11 @@ const LoginPage = () => {
       const data = await loginUser(email, password);
 
       if (data.status !== "success") {
-        alert(data.message || "Login failed");
+        toast.error(data.message || "Login failed");
         return;
       }
 
-      alert("Login successful");
+      toast.success("Login successful");
       localStorage.setItem("user", JSON.stringify(data.data.user));
       console.log(data.data.user);
 
@@ -28,7 +29,7 @@ const LoginPage = () => {
         navigate("/dashboard");
       }
     } catch (err) {
-      alert(err.response?.data?.message || "Login failed");
+      toast.error(err.response?.data?.message || "Login failed");
     }
   };
 
