@@ -7,6 +7,8 @@ import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import userRouter from "./routes/userRoutes.js";
+import requestRotuer from "./routes/requestRoutes.js";
 
 // import { fileURLToPath } from "url"
 dotenv.config({ path: "./config.env" });
@@ -65,6 +67,9 @@ app.use((req, res, next) => {
   console.log(`Request Time: ${req.requestTime}`);
   next();
 });
+
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/requests", requestRotuer);
 
 // Error handling for routes that don't exist
 // app.all("*", (req, res, next) => {

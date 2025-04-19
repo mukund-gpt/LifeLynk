@@ -46,8 +46,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(formData, role);
       const data = await registerUser(formData, role);
-      alert("Registration successful!");
+      // localStorage.setItem("user", JSON.stringify(data));
+      // alert("Registration successful!");
       setFormData({
         name: "",
         email: "",
@@ -57,10 +59,7 @@ const Register = () => {
         bloodGroup: "",
       });
     } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        "Something went wrong. Please try again.";
-      alert(message);
+      alert(error.message);
     }
   };
 
@@ -136,7 +135,9 @@ const Register = () => {
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword((prev) => !prev)}>
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
