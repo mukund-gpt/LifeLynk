@@ -39,16 +39,18 @@ export const updateRequest = async (req, res, next) => {
 
 export const createRequest = async (req, res) => {
   try {
-    const { patientName, contactNumber, bloodGroup, unitsRequired } = req.body;
+    const { patientName, contactNumber, bloodGroup, unitsRequired, age } = req.body.request;
     const hospital = req.user._id;
 
     const newRequest = await BloodRequest.create({
       patientName,
       contactNumber,
       bloodGroup,
-      unitsRequired,
+      age: Number(age),
+      unitsRequired: Number(unitsRequired),
       hospital,
     });
+
     res.status(201).json({
       status: "success",
       newRequest,
