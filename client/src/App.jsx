@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./redux/AuthSlice";  
+import { setUser } from "./redux/AuthSlice";
 
 import HospitalProfile from "./pages/HospitalProfile";
 import HospitalRequests from "./pages/HospitalRequests";
@@ -11,10 +16,11 @@ import Login from "./pages/Login";
 import Contract from "./test/Contract";
 import ProfileDashboard from "./pages/ProfileDashBoard";
 import Navbar from "./components/navbar";
+import HospitalDonations from "./test/HospitalDonations";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user); 
+  const user = useSelector((state) => state.auth.user);
   const role = user?.role;
 
   useEffect(() => {
@@ -57,7 +63,11 @@ const App = () => {
           element={
             user ? (
               <Navigate
-                to={role === "hospital" ? "/hospitalProfile" : "/dashboard/profile"}
+                to={
+                  role === "hospital"
+                    ? "/hospitalProfile"
+                    : "/dashboard/profile"
+                }
               />
             ) : (
               <Register />
@@ -69,7 +79,11 @@ const App = () => {
           element={
             user ? (
               <Navigate
-                to={role === "hospital" ? "/hospitalProfile" : "/dashboard/profile"}
+                to={
+                  role === "hospital"
+                    ? "/hospitalProfile"
+                    : "/dashboard/profile"
+                }
               />
             ) : (
               <Login />
@@ -78,7 +92,7 @@ const App = () => {
         />
 
         {/* Test Route */}
-        <Route path="/test" element={<Contract />} />
+        <Route path="/test" element={<HospitalDonations />} />
 
         {/* 🏥 Hospital Protected Routes */}
         {user && role === "hospital" && (
