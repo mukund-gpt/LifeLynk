@@ -68,19 +68,15 @@ const ProfileDashboard = () => {
 
       {/* Main Content */}
       <Box flex={1} p={4} sx={{ bgcolor: "#f9fafb", overflow: "auto" }}>
-        <Routes>
           {/* Default route to profile */}
-          <Route path="/dashboard" element={<Navigate to="/dashboard/profile" replace />} />
-          
-          {/* Routes for profile pages */}
-          <Route path="/profile" element={<DonorProfile />} />
-          <Route path="/edit" element={<EditProfile />} />
-          <Route path="/requirements" element={<NewRequirements />} />
-          <Route path="/donated" element={<Donated />} />
-
-          {/* Fallback route */}
-          <Route path="*" element={<div>Page not found</div>} />
-        </Routes>
+          <Routes>
+            <Route path="/" element={<Navigate to="profile" replace />} />
+            <Route path="profile" element={<DonorProfile />} />
+            <Route path="edit" element={<EditProfile />} />
+            <Route path="requirements" element={<NewRequirements />} />
+            <Route path="donated" element={<Donated />} />
+            <Route path="*" element={<div>Page not found</div>} />
+          </Routes>
       </Box>
     </Box>
   );
