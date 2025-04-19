@@ -44,7 +44,7 @@ LIFELYNK allows hospitals to create and publish blood donation requests, which a
 - **Frontend**: React.js, Tailwind CSS, Material UI  
 - **Backend**: Node.js, Express.js  
 - **Database**: MongoDB  
-- **Blockchain**: Solidity, Smart Contracts, Web3.js  
+- **Blockchain**: Solidity, Smart Contracts, ethers.js  
 - **Email Notifications**: Nodemailer  
 - **Geolocation**: Google Maps API / Geocoding API
 
