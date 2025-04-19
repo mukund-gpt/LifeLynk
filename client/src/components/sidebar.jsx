@@ -3,10 +3,14 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux"; 
+import { setUser } from "../redux/AuthSlice"; 
 
 const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user); 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleSidebar = () => {
@@ -14,11 +18,12 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem("user")
+    dispatch(setUser(null)); 
     try {
-      const res = await axios.get("/api/v1/users/logout")
-    } catch(err){
-      console.log("err: ", err.message)
+      const res = await axios.get("/api/v1/users/logout");
+      console.log(res.data);
+    } catch (err) {
+      console.log("err: ", err.message);
     }
     navigate('/login');
   };
