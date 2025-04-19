@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
+
 import HospitalProfile from "./pages/HospitalProfile";
 import HospitalRequests from "./pages/HospitalRequests";
 import HospitalDonors from "./pages/HospitalDonors";
@@ -15,47 +16,52 @@ import ProfileDashboard from "./pages/ProfileDashBoard";
 import Navbar from "./components/navbar";
 
 const App = () => {
-  const user = JSON.parse(localStorage.getItem("user")); // get user from localStorage
-  console.log(user);
-
-  const role = user?.role; // 'user' or 'hospital'
+  const [user, setUser] = useState(null);
+  const role = user?.role;
 
   return (
     <Router>
       <Navbar/>
       <Routes>
-      <Route
+        {/* Landing Route */}
+        <Route
           path="/"
           element={
-            user.role === "hospital" ? (
-              <Navigate to="/hospitalProfile" />
-            ) : user.role === "donor" ? (
-              <Navigate to="/dashboard/profile" />
+            user ? (
+              role === "hospital" ? (
+                <Navigate to="/hospitalProfile" />
+              ) : role === "donor" ? (
+                <Navigate to="/dashboard/profile" />
+              ) : (
+                <Navigate to="/login" />
+              )
             ) : (
-              <Login />
+              <Navigate to="/login" />
             )
           }
         />
+
+        {/* Public Routes */}
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setUser={setUser} />} />
         <Route path="/test" element={<Contract />} />
 
-        {/* Routes for hospital only */}
-        {role === "hospital" && (
+        {/* Hospital Protected Routes */}
+        {user && role === "hospital" && (
           <>
+            <Route path="/hospitalProfile" element={<HospitalProfile />} />
             <Route path="/bloodRequests" element={<HospitalRequests />} />
             <Route path="/donors" element={<HospitalDonors />} />
-            <Route path="/hospitalProfile" element={<HospitalProfile />} />
           </>
         )}
 
-        {/* Routes for user (donor) only */}
-        {role === "donor" && (
+        {/* Donor Protected Route */}
+        {user && role === "donor" && (
           <Route path="/dashboard/*" element={<ProfileDashboard />} />
         )}
 
-        {/* Redirect unknown routes */}
-        <Route path="*" element={<Navigate to="/" />} />
+        {/* Catch-all Route */}
+        <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
       </Routes>
     </Router>
   );
