@@ -7,13 +7,10 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    IconButton
+    Paper
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
-const Closed = ({ requests, setRequestFormIdx, setShowEditRequestForm, handleDelete }) => {
+const Closed = ({ requests }) => {
     return (
         <div className="max-w-5xl mx-auto p-4">
             <Typography variant="h6" className="text-red-600 mb-4">
@@ -31,7 +28,6 @@ const Closed = ({ requests, setRequestFormIdx, setShowEditRequestForm, handleDel
                             <TableCell>Units</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Requested At</TableCell>
-                            <TableCell>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -51,25 +47,6 @@ const Closed = ({ requests, setRequestFormIdx, setShowEditRequestForm, handleDel
                                     </TableCell>
                                     <TableCell>
                                         {new Date(req.createdAt).toLocaleString()}
-                                    </TableCell>
-                                    <TableCell>
-                                        <IconButton
-                                            color="primary"
-                                            onClick={() => {
-                                                const actualIndex = requests.findIndex(r => r._id === req._id);
-                                                setRequestFormIdx(actualIndex);
-                                                setShowEditRequestForm(true);
-                                            }}
-                                            disabled={req.status !== "open"}
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            color="error"
-                                            onClick={() => handleDelete(req._id)}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))}
