@@ -4,7 +4,6 @@ import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 
-// sider containing request form and edit profile form links
 const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => {
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -38,7 +37,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
           <ul className="space-y-4">
             <li>
               <Button
-                onClick={() => {navigate('/hospitalProfile')}}
+                onClick={() => { navigate('/hospitalProfile') }}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Profile
@@ -54,7 +53,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
             </li>}
             <li>
               <Button
-                onClick={() => {navigate('/bloodRequests')}}
+                onClick={() => { navigate('/bloodRequests') }}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Requests
@@ -70,7 +69,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
             </li>}
             <li>
               <Button
-                onClick={() => {navigate('/donors')}}
+                onClick={() => { navigate('/donors') }}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Donors
