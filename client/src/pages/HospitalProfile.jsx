@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import EditProfileForm from "./EditHospitalProfileForm";
 import Sidebar from "../components/sidebar";
 import axios from "axios";
+import {toast} from "react-hot-toast"
 
 // Material UI components
 import {

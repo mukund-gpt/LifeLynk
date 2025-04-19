@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
+import {toast} from "react-hot-toast"
 import {
     Box, Tabs, Tab, Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow, Paper, IconButton
@@ -38,6 +39,7 @@ const HospitalRequests = () => {
             try {
                 setLoading(true)
                 const res = await axios.get("/api/v1/requests/getAll");
+                console.log("res: ", res)
                 setRequests(res.data.requests);
             } catch (err) {
                 console.error("Error fetching blood requests:", err);

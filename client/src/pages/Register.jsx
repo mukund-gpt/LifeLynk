@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -19,8 +19,10 @@ import {
   Bloodtype,
   Visibility,
   VisibilityOff,
+  LocalHospital,
 } from "@mui/icons-material";
 import { registerUser } from "../apis/userApi";
+import { reverseGeocode } from "../apis/locationApi";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -33,7 +35,10 @@ const Register = () => {
     passwordConfirm: "",
     contact: "",
     bloodGroup: "",
+    hospitalName: "",
   });
+  const [location, setLocation] = useState(null); // GeoJSON
+  const [address, setAddress] = useState(""); // Only for display
   const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
@@ -48,10 +53,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(formData, role);
-      const data = await registerUser(formData, role);
-      // localStorage.setItem("user", JSON.stringify(data));
-      // alert("Registration successful!");
+      const dataToSend = {
+        ...formData,
+        ...(role === "donor" ? {} : { hospitalName: formData.hospitalName }),
+        ...(location && { location }),
+      };
+
+      await registerUser(dataToSend, role);
+
       setFormData({
         name: "",
         email: "",
@@ -59,11 +68,33 @@ const Register = () => {
         passwordConfirm: "",
         contact: "",
         bloodGroup: "",
+        hospitalName: "",
       });
+
+      setLocation(null);
+      setAddress("");
     } catch (error) {
       alert(error.message);
     }
   };
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        setLocation({
+          type: "Point",
+          coordinates: [longitude, latitude],
+        });
+        const addr = await reverseGeocode(latitude, longitude);
+        setAddress(addr);
+      },
+      (err) => {
+        console.error("Location access denied:", err);
+        setAddress("Location access denied");
+      }
+    );
+  }, []);
 
   return (
     <Container maxWidth="sm" sx={{ py: 6 }}>
@@ -102,6 +133,24 @@ const Register = () => {
                 ),
               }}
             />
+            {role === "hospital" && (
+              <TextField
+                fullWidth
+                label="Hospital Name"
+                name="hospitalName"
+                value={formData.hospitalName}
+                onChange={handleChange}
+                required
+                size="large"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LocalHospital />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            )}
             <TextField
               fullWidth
               label="Email"
@@ -202,6 +251,13 @@ const Register = () => {
                 }}
               />
             )}
+
+            {address && (
+              <Typography variant="body2" color="textSecondary">
+                📍 Current Location: {address}
+              </Typography>
+            )}
+
             <Button
               type="submit"
               variant="contained"
@@ -219,7 +275,7 @@ const Register = () => {
             </Button>
           </Box>
         </form>
-        {/* Login Button */}
+
         <Button
           variant="text"
           fullWidth

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import {
     Typography,
     Table,
@@ -8,14 +9,34 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton
+    IconButton,
+    Tooltip
 } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check"; // For the tick icon
+import CloseIcon from "@mui/icons-material/Close"; // For the cross icon
+import { updateRequestStatus } from "../../apis/requirementsApi";
+import { toast } from "react-hot-toast";
+import LoadingPage from "../../components/loading";
 
-const Booked = ({ requests, setRequestFormIdx, setShowEditRequestForm, handleDelete }) => {
+const Booked = ({ requests }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleMoveToStatus = async (id, status) => {
+        try {
+            setLoading(true);
+            const res = await updateRequestStatus({ id, status });
+            toast.success("Status changed successfully");
+        } catch (error) {
+            console.log('Error:', error.message);
+            toast.error("Error in changing status");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <div className="max-w-5xl mx-auto p-4">
+            {loading && <LoadingPage />}
             <Typography variant="h6" className="text-orange-600 mb-4">
                 Booked Blood Requests
             </Typography>
@@ -53,23 +74,24 @@ const Booked = ({ requests, setRequestFormIdx, setShowEditRequestForm, handleDel
                                         {new Date(req.createdAt).toLocaleString()}
                                     </TableCell>
                                     <TableCell>
-                                        <IconButton
-                                            color="primary"
-                                            onClick={() => {
-                                                const actualIndex = requests.findIndex(r => r._id === req._id);
-                                                setRequestFormIdx(actualIndex);
-                                                setShowEditRequestForm(true);
-                                            }}
-                                            disabled={req.status !== "open"}
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
-                                        <IconButton
-                                            color="error"
-                                            onClick={() => handleDelete(req._id)}
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                        <div className="flex gap-4">
+                                            <Tooltip title="Move to Open" arrow>
+                                                <IconButton
+                                                    color="error"
+                                                    onClick={() => handleMoveToStatus(req._id, "open")}
+                                                >
+                                                    <CloseIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Move to Closed" arrow>
+                                                <IconButton
+                                                    color="success"
+                                                    onClick={() => handleMoveToStatus(req._id, "closed")}
+                                                >
+                                                    <CheckIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}

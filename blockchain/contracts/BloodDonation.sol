@@ -4,40 +4,48 @@ pragma solidity ^0.8.28;
 contract BloodDonation {
     address public owner;
 
+    struct DonorInfo {
+        string name;
+        string contact;
+        string email;
+        string mongoId;
+    }
+
+    struct PatientInfo {
+        string name;
+        uint256 age;
+        string email;
+        string contact;
+    }
+
     struct HospitalInfo {
         string name;
         string location;
+        string mongoId;
     }
 
-    // Authorized hospitals with details
-    mapping(address => HospitalInfo) public hospitalDetails;
-    mapping(address => bool) public isHospital;
-
     struct DonationRecord {
-        address hospital;
-        address donor;
-        string donorEmail;
-        string patientName;
-        string patientEmail;
+        address hospitalMetaMask;
+        address donorMetaMask;
+        DonorInfo donor;
+        PatientInfo patient;
+        HospitalInfo hospital;
+        string bloodGroup;
+        uint256 unitsDonated;
         uint256 timestamp;
     }
 
-    // Records indexed by hospital and donor
-    mapping(address => DonationRecord[]) public donationsReceivedByHospital;
-    mapping(address => DonationRecord[]) public donationsGivenByDonor;
+    mapping(string => DonationRecord[]) public donationsByDonor;
+    mapping(string => DonationRecord[]) public donationsReceivedByHospital;
 
-    // Events for off-chain tracking
-    event HospitalRegistered(
-        address indexed hospital,
-        string name,
-        string location
-    );
     event DonationRecorded(
-        address indexed hospital,
-        address indexed donor,
-        string donorEmail,
+        string indexed donorMongoId,
+        string indexed hospitalMongoId,
         string patientName,
-        string patientEmail
+        string patientEmail,
+        string patientContact,
+        string bloodGroup,
+        uint256 unitsDonated
     );
 
     modifier onlyOwner() {
@@ -45,72 +53,62 @@ contract BloodDonation {
         _;
     }
 
-    modifier onlyHospital() {
-        require(isHospital[msg.sender], "Caller not verified hospital");
-        _;
-    }
-
     constructor() {
         owner = msg.sender;
     }
 
-    /// @notice Owner registers a hospital with name & location
-    function registerHospital(
-        address _hospital,
-        string calldata _name,
-        string calldata _location
-    ) external onlyOwner {
-        require(_hospital != address(0), "Invalid hospital address");
-        require(!isHospital[_hospital], "Hospital already registered");
-        hospitalDetails[_hospital] = HospitalInfo({
-            name: _name,
-            location: _location
-        });
-        isHospital[_hospital] = true;
-        emit HospitalRegistered(_hospital, _name, _location);
-    }
-
-    /// @notice Hospital records a donation with donor & patient emails
+    /// @notice Hospital records a donation with grouped donor, patient, and hospital info
     function recordDonation(
-        address _donor,
-        string calldata _donorEmail,
-        string calldata _patientName,
-        string calldata _patientEmail
-    ) external onlyHospital {
-        require(_donor != address(0), "Invalid donor address");
+        address donorMetaMask,
+        DonorInfo calldata donor,
+        PatientInfo calldata patient,
+        HospitalInfo calldata hospital,
+        string calldata bloodGroup,
+        uint256 unitsDonated
+    ) external {
+        require(bytes(donor.mongoId).length > 0, "Invalid donor Mongo ID");
+        require(
+            bytes(hospital.mongoId).length > 0,
+            "Invalid hospital Mongo ID"
+        );
 
         DonationRecord memory rec = DonationRecord({
-            hospital: msg.sender,
-            donor: _donor,
-            donorEmail: _donorEmail,
-            patientName: _patientName,
-            patientEmail: _patientEmail,
+            hospitalMetaMask: msg.sender,
+            donorMetaMask: donorMetaMask,
+            donor: donor,
+            patient: patient,
+            hospital: hospital,
+            bloodGroup: bloodGroup,
+            unitsDonated: unitsDonated,
             timestamp: block.timestamp
         });
 
-        donationsReceivedByHospital[msg.sender].push(rec);
-        donationsGivenByDonor[_donor].push(rec);
+        // push to MongoID-based mappings only
+        donationsByDonor[donor.mongoId].push(rec);
+        donationsReceivedByHospital[hospital.mongoId].push(rec);
 
         emit DonationRecorded(
-            msg.sender,
-            _donor,
-            _donorEmail,
-            _patientName,
-            _patientEmail
+            donor.mongoId,
+            hospital.mongoId,
+            patient.name,
+            patient.email,
+            patient.contact,
+            bloodGroup,
+            unitsDonated
         );
     }
 
-    /// @notice Get all donation records for a hospital
-    function getDonationsByHospital(
-        address _hospital
+    /// @notice Get all donation records for a donor (by MongoDB ID)
+    function getDonationsByDonor(
+        string calldata donorMongoId
     ) external view returns (DonationRecord[] memory) {
-        return donationsReceivedByHospital[_hospital];
+        return donationsByDonor[donorMongoId];
     }
 
-    /// @notice Get all donation records for a donor
-    function getDonationsByDonor(
-        address _donor
+    /// @notice Get all donation records for a hospital (by MongoDB ID)
+    function getDonationsReceivedByHospital(
+        string calldata hospitalMongoId
     ) external view returns (DonationRecord[] memory) {
-        return donationsGivenByDonor[_donor];
+        return donationsReceivedByHospital[hospitalMongoId];
     }
 }
