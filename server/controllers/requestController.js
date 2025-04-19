@@ -17,9 +17,7 @@ export const updateRequest = async (req, res, next) => {
     const { id, status } = req.body;
 
     if (!id) {
-      return res
-        .status(400)
-        .json({ status: "fail", message: "Request ID is required" });
+      return res.status(400).json({ status: 'fail', message: 'Request ID is required' });
     }
 
     const filteredBody = filterObj(
@@ -29,9 +27,19 @@ export const updateRequest = async (req, res, next) => {
       'age',
       'unitsRequired',
       'bloodGroup',
+      'status'
     );
 
     const update = { ...filteredBody };
+
+    if (status === 'booked') {
+      update.donor = req.user._id; // Assign the donor directly
+    }
+
+    if (status === 'open' && req.user.role === 'hospital') {
+      // Clear the donor reference
+      update.donor = null;
+    }
 
     const updatedRequest = await BloodRequest.findByIdAndUpdate(id, update, {
       new: true,
@@ -39,20 +47,18 @@ export const updateRequest = async (req, res, next) => {
     });
 
     if (!updatedRequest) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "Request not found" });
+      return res.status(404).json({ status: 'fail', message: 'Request not found' });
     }
 
     res.status(200).json({
-      status: "success",
+      status: 'success',
       data: {
         request: updatedRequest,
       },
     });
   } catch (err) {
     console.error("err: ", err.message);
-    res.status(500).json({ status: "fail", message: err.message });
+    res.status(500).json({ status: 'fail', message: err.message });
   }
 };
 
