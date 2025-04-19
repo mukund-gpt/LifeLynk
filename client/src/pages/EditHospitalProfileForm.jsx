@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import {
     Dialog,
     DialogTitle,
@@ -8,10 +9,9 @@ import {
     Button,
 } from "@mui/material";
 
-const EditProfileForm = ({ closeProfileEditFormDialog, details }) => {
+const EditProfileForm = ({ closeProfileEditFormDialog, details, setProfileData }) => {
     const [profile, setProfile] = useState(details);
 
-    // changing the values of form states
     const handleInputChange = (field, value) => {
         setProfile(prev => ({
             ...prev,
@@ -19,10 +19,15 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details }) => {
         }));
     };
 
-    // submitting edit profile form
-    const handleProfileFormSubmit = () => {
-        console.log("Submitting:", profile);
-        // You can send `profile` to backend here
+    const handleProfileFormSubmit = async () => {
+        try {
+            const res = await axios.patch("/api/v1/users/updateHospital", {
+                profile
+            })
+            setProfileData(res.data.data.user)
+        } catch (err) {
+            console.log("error: ", err.message)
+        }
         closeProfileEditFormDialog(); // Close the form dialog
     };
 
@@ -59,7 +64,7 @@ const EditProfileForm = ({ closeProfileEditFormDialog, details }) => {
                     label="Phone Number"
                     type="tel"
                     fullWidth
-                    value={profile.contactNo}
+                    value={profile.contact}
                     onChange={(e) => handleInputChange("contactNo", e.target.value)}
                 />
             </DialogContent>
