@@ -9,20 +9,14 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "hospital",
-        "type": "address"
+        "internalType": "string",
+        "name": "donorMongoId",
+        "type": "string"
       },
       {
         "indexed": true,
-        "internalType": "address",
-        "name": "donor",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
-        "name": "donorEmail",
+        "name": "hospitalMongoId",
         "type": "string"
       },
       {
@@ -36,42 +30,35 @@
         "internalType": "string",
         "name": "patientEmail",
         "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "patientContact",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "bloodGroup",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "unitsDonated",
+        "type": "uint256"
       }
     ],
     "name": "DonationRecorded",
     "type": "event"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "hospital",
-        "type": "address"
-      },
-      {
-        "indexed": false,
         "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "location",
-        "type": "string"
-      }
-    ],
-    "name": "HospitalRegistered",
-    "type": "event"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "",
-        "type": "address"
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -79,32 +66,103 @@
         "type": "uint256"
       }
     ],
-    "name": "donationsGivenByDonor",
+    "name": "donationsByDonor",
     "outputs": [
       {
         "internalType": "address",
-        "name": "hospital",
+        "name": "hospitalMetaMask",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "donor",
+        "name": "donorMetaMask",
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "donorEmail",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.DonorInfo",
+        "name": "donor",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "age",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.PatientInfo",
+        "name": "patient",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "location",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.HospitalInfo",
+        "name": "hospital",
+        "type": "tuple"
       },
       {
         "internalType": "string",
-        "name": "patientName",
+        "name": "bloodGroup",
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "patientEmail",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "unitsDonated",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -118,9 +176,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
+        "internalType": "string",
         "name": "",
-        "type": "address"
+        "type": "string"
       },
       {
         "internalType": "uint256",
@@ -132,28 +190,99 @@
     "outputs": [
       {
         "internalType": "address",
-        "name": "hospital",
+        "name": "hospitalMetaMask",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "donor",
+        "name": "donorMetaMask",
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "donorEmail",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.DonorInfo",
+        "name": "donor",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "age",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.PatientInfo",
+        "name": "patient",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "location",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.HospitalInfo",
+        "name": "hospital",
+        "type": "tuple"
       },
       {
         "internalType": "string",
-        "name": "patientName",
+        "name": "bloodGroup",
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "patientEmail",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "unitsDonated",
+        "type": "uint256"
       },
       {
         "internalType": "uint256",
@@ -167,9 +296,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_donor",
-        "type": "address"
+        "internalType": "string",
+        "name": "donorMongoId",
+        "type": "string"
       }
     ],
     "name": "getDonationsByDonor",
@@ -178,28 +307,99 @@
         "components": [
           {
             "internalType": "address",
-            "name": "hospital",
+            "name": "hospitalMetaMask",
             "type": "address"
           },
           {
             "internalType": "address",
-            "name": "donor",
+            "name": "donorMetaMask",
             "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "donorEmail",
-            "type": "string"
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "contact",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "mongoId",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.DonorInfo",
+            "name": "donor",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "age",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "contact",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.PatientInfo",
+            "name": "patient",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "mongoId",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.HospitalInfo",
+            "name": "hospital",
+            "type": "tuple"
           },
           {
             "internalType": "string",
-            "name": "patientName",
+            "name": "bloodGroup",
             "type": "string"
           },
           {
-            "internalType": "string",
-            "name": "patientEmail",
-            "type": "string"
+            "internalType": "uint256",
+            "name": "unitsDonated",
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -218,39 +418,110 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_hospital",
-        "type": "address"
+        "internalType": "string",
+        "name": "hospitalMongoId",
+        "type": "string"
       }
     ],
-    "name": "getDonationsByHospital",
+    "name": "getDonationsReceivedByHospital",
     "outputs": [
       {
         "components": [
           {
             "internalType": "address",
-            "name": "hospital",
+            "name": "hospitalMetaMask",
             "type": "address"
           },
           {
             "internalType": "address",
-            "name": "donor",
+            "name": "donorMetaMask",
             "type": "address"
           },
           {
-            "internalType": "string",
-            "name": "donorEmail",
-            "type": "string"
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "contact",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "mongoId",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.DonorInfo",
+            "name": "donor",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256",
+                "name": "age",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "email",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "contact",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.PatientInfo",
+            "name": "patient",
+            "type": "tuple"
+          },
+          {
+            "components": [
+              {
+                "internalType": "string",
+                "name": "name",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "location",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "mongoId",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct BloodDonation.HospitalInfo",
+            "name": "hospital",
+            "type": "tuple"
           },
           {
             "internalType": "string",
-            "name": "patientName",
+            "name": "bloodGroup",
             "type": "string"
           },
           {
-            "internalType": "string",
-            "name": "patientEmail",
-            "type": "string"
+            "internalType": "uint256",
+            "name": "unitsDonated",
+            "type": "uint256"
           },
           {
             "internalType": "uint256",
@@ -261,49 +532,6 @@
         "internalType": "struct BloodDonation.DonationRecord[]",
         "name": "",
         "type": "tuple[]"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "hospitalDetails",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "location",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isHospital",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -326,49 +554,97 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_donor",
+        "name": "donorMetaMask",
         "type": "address"
       },
       {
-        "internalType": "string",
-        "name": "_donorEmail",
-        "type": "string"
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.DonorInfo",
+        "name": "donor",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "age",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "email",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "contact",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.PatientInfo",
+        "name": "patient",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          {
+            "internalType": "string",
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "location",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "mongoId",
+            "type": "string"
+          }
+        ],
+        "internalType": "struct BloodDonation.HospitalInfo",
+        "name": "hospital",
+        "type": "tuple"
       },
       {
         "internalType": "string",
-        "name": "_patientName",
+        "name": "bloodGroup",
         "type": "string"
       },
       {
-        "internalType": "string",
-        "name": "_patientEmail",
-        "type": "string"
+        "internalType": "uint256",
+        "name": "unitsDonated",
+        "type": "uint256"
       }
     ],
     "name": "recordDonation",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_hospital",
-        "type": "address"
-      },
-      {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_location",
-        "type": "string"
-      }
-    ],
-    "name": "registerHospital",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
