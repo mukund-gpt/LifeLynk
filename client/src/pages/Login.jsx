@@ -17,11 +17,16 @@ const LoginPage = () => {
         alert(data.message || "Login failed");
         return;
       }
+
       alert("Login successful");
-      console.log(data);
-      console.log(data.data.user);
       localStorage.setItem("user", JSON.stringify(data.data.user));
-      navigate("/dashboard");
+      console.log(data.data.user);
+
+      if (data.data.user.role === "hospital") {
+        navigate("/hospitalProfile");
+      } else if (data.data.user.role === "donor") {
+        navigate("/dashboard");
+      }
     } catch (err) {
       alert(err.response?.data?.message || "Login failed");
     }
@@ -36,6 +41,7 @@ const LoginPage = () => {
         >
           Login to Your Account
         </Typography>
+
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <TextField
             label="Email"
@@ -64,6 +70,16 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
+
+        {/* Register Button */}
+        <Button
+          variant="text"
+          fullWidth
+          className="!mt-4 !text-blue-600"
+          onClick={() => navigate("/register")}
+        >
+          Don’t have an account? Register
+        </Button>
       </Card>
     </div>
   );

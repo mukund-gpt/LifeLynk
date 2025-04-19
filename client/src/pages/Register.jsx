@@ -21,8 +21,10 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import { registerUser } from "../apis/userApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [role, setRole] = useState("donor");
   const [formData, setFormData] = useState({
     name: "",
@@ -217,6 +219,15 @@ const Register = () => {
             </Button>
           </Box>
         </form>
+        {/* Login Button */}
+        <Button
+          variant="text"
+          fullWidth
+          className="!mt-4 !text-blue-600"
+          onClick={() => navigate("/login")}
+        >
+          Have an account? Login
+        </Button>
       </Paper>
     </Container>
   );
