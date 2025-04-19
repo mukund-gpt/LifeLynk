@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"
+import axios from "axios";
 import {
     Typography,
     Table,
@@ -12,29 +12,31 @@ import {
     IconButton,
     Tooltip
 } from "@mui/material";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import CheckIcon from "@mui/icons-material/Check"; // For the tick icon
+import CloseIcon from "@mui/icons-material/Close"; // For the cross icon
 import { updateRequestStatus } from "../../apis/requirementsApi";
-import {toast} from "react-hot-toast"
-import LoadingPage from "../../components/loading"
+import { toast } from "react-hot-toast";
+import LoadingPage from "../../components/loading";
 
 const Booked = ({ requests }) => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+
     const handleMoveToStatus = async (id, status) => {
         try {
-            setLoading(true)
+            setLoading(true);
             const res = await updateRequestStatus({ id, status });
-            toast.success("Status changed successfully")
+            toast.success("Status changed successfully");
         } catch (error) {
             console.log('Error:', error.message);
-            toast.error("Error in changing status")
-        } finally{
-            setLoading(false)
+            toast.error("Error in changing status");
+        } finally {
+            setLoading(false);
         }
-    }
+    };
+
     return (
         <div className="max-w-5xl mx-auto p-4">
-            {loading && <LoadingPage/>}
+            {loading && <LoadingPage />}
             <Typography variant="h6" className="text-orange-600 mb-4">
                 Booked Blood Requests
             </Typography>
@@ -75,18 +77,18 @@ const Booked = ({ requests }) => {
                                         <div className="flex gap-4">
                                             <Tooltip title="Move to Open" arrow>
                                                 <IconButton
-                                                    color="primary"
+                                                    color="error"
                                                     onClick={() => handleMoveToStatus(req._id, "open")}
                                                 >
-                                                    <ArrowLeftIcon />
+                                                    <CloseIcon />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Move to Closed" arrow>
                                                 <IconButton
-                                                    color="error"
+                                                    color="success"
                                                     onClick={() => handleMoveToStatus(req._id, "closed")}
                                                 >
-                                                    <ArrowRightIcon />
+                                                    <CheckIcon />
                                                 </IconButton>
                                             </Tooltip>
                                         </div>
