@@ -17,26 +17,28 @@ export const updateRequest = async (req, res, next) => {
     const { id, status } = req.body;
 
     if (!id) {
-      return res.status(400).json({ status: 'fail', message: 'Request ID is required' });
+      return res
+        .status(400)
+        .json({ status: "fail", message: "Request ID is required" });
     }
 
     const filteredBody = filterObj(
       req.body,
-      'patientName',
-      'contactNumber',
-      'age',
-      'unitsRequired',
-      'bloodGroup',
-      'status'
+      "patientName",
+      "contactNumber",
+      "age",
+      "unitsRequired",
+      "bloodGroup",
+      "status"
     );
 
     const update = { ...filteredBody };
 
-    if (status === 'booked') {
+    if (status === "booked") {
       update.donor = req.user._id; // Assign the donor directly
     }
 
-    if (status === 'open' && req.user.role === 'hospital') {
+    if (status === "open" && req.user.role === "hospital") {
       // Clear the donor reference
       update.donor = null;
     }
@@ -47,21 +49,22 @@ export const updateRequest = async (req, res, next) => {
     });
 
     if (!updatedRequest) {
-      return res.status(404).json({ status: 'fail', message: 'Request not found' });
+      return res
+        .status(404)
+        .json({ status: "fail", message: "Request not found" });
     }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
         request: updatedRequest,
       },
     });
   } catch (err) {
     console.error("err: ", err.message);
-    res.status(500).json({ status: 'fail', message: err.message });
+    res.status(500).json({ status: "fail", message: err.message });
   }
 };
-
 
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
@@ -129,11 +132,11 @@ export const getAllOpenRequests = async (req, res) => {
   }
 };
 
-
 export const createRequestAndSendEmail = async (req, res) => {
   try {
-    console.log("reqBodyReq: ", req.body.request)
-    const { patientName, contactNumber, bloodGroup, unitsRequired, age } = req.body.request;
+    console.log("reqBodyReq: ", req.body.request);
+    const { patientName, contactNumber, bloodGroup, unitsRequired, age } =
+      req.body.request;
     const hospital = req.user._id;
 
     const newRequest = await BloodRequest.create({
@@ -207,32 +210,5 @@ export const deleteRequest = async (req, res) => {
   } catch (err) {
     console.log("error: ", err.message);
     return res.status(500).json({ message: "Server error" });
-
   }
 };
-
-//update request status
-export const updateRequestStatus = async (req, res) => {
-  try {
-    console.log(req);
-    const { id, status } = req.body;
-    const updatedRequest = await BloodRequest.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-    res.status(200).json({
-      status: "success",
-      data: {
-        request: updatedRequest,
-      },
-    });
-  } catch (error) {
-    console.error("Error updating request status:", error);
-    res.status(500).json({
-      status: "fail",
-      message: error.message,
-    });
-  }
-};
-
