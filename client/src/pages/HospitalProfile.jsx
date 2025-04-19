@@ -16,20 +16,26 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
+import LoadingPage from "../components/loading";
 
 const HospitalProfile = () => {
   const [showLicenseForm, setShowLicenseForm] = useState(false);
   const [licenseNumber, setLicenseNumber] = useState("");
   const [profileData, setProfileData] = useState({});
   const [showEditProfileForm, setShowEditProfileForm] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        setLoading(true)
         const res = await axios.get("/api/v1/users/getHospital");
         setProfileData(res.data.data.hospital);
       } catch (err) {
         console.error("Error fetching profile data:", err);
+        toast.error('Error in fetching profile data!');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -52,6 +58,7 @@ const HospitalProfile = () => {
 
   return (
     <div className="p-8 space-y-8 bg-gray-100 min-h-screen">
+      {loading && <LoadingPage/>}
       {showEditProfileForm && (
         <EditProfileForm
           closeProfileEditFormDialog={closeProfileEditFormDialog}
@@ -60,7 +67,7 @@ const HospitalProfile = () => {
         />
       )}
       <Sidebar
-        openRequestFormDialog={() => {}}
+        openRequestFormDialog={() => { }}
         openProfileEditFormDialog={openProfileEditFormDialog}
         a={true}
         b={false}

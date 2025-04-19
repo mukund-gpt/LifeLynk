@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from 'react-hot-toast';
 import axios from "axios"
 import {
     Dialog,
@@ -9,6 +10,7 @@ import {
     Button,
     MenuItem
 } from "@mui/material";
+import LoadingPage from "../components/loading";
 
 const RequestForm = ({ closeRequestFormDialog }) => {
     const [request, setRequest] = useState({
@@ -18,6 +20,7 @@ const RequestForm = ({ closeRequestFormDialog }) => {
         unitsRequired: "",
         contactNumber: ""
     });
+    const [loading, setLoading] = useState(false)
 
     const handleInputChange = (field, value) => {
         setRequest(prev => ({
@@ -28,14 +31,18 @@ const RequestForm = ({ closeRequestFormDialog }) => {
 
     const handleRequestFormSubmit = async () => {
         try {
+            setLoading(true)
             const res = await axios.post("/api/v1/requests/", {
                 request
             })
-            console.log("resp: ", res.data)
+            toast.success('Request created successfully!');
         } catch (err) {
             console.log("error: ", err.message)
+            toast.error("Error in creating request")
+        } finally{
+            setLoading(false);
+            closeRequestFormDialog();
         }
-        closeRequestFormDialog(); // Close the form dialog
     };
 
     const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
@@ -46,6 +53,7 @@ const RequestForm = ({ closeRequestFormDialog }) => {
             onClose={closeRequestFormDialog}
             aria-labelledby="request-form-dialog-title"
         >
+            {loading && <LoadingPage/>}
             <DialogTitle id="request-form-dialog-title">Blood Request Form</DialogTitle>
             <DialogContent>
                 <TextField

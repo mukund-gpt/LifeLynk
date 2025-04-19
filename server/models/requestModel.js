@@ -18,6 +18,10 @@ const bloodRequestSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  age:{
+    type: Number,
+    required: [true, "Please input age"]
+  },
   hospital: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "hospital",

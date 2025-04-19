@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Contract from "./test/Contract";
 import ProfileDashboard from "./pages/ProfileDashBoard";
+import Navbar from "./components/navbar";
 
 const App = () => {
   const user = JSON.parse(localStorage.getItem("user")); // get user from localStorage
@@ -21,6 +22,7 @@ const App = () => {
 
   return (
     <Router>
+      <Navbar/>
       <Routes>
         <Route
           path="/"
