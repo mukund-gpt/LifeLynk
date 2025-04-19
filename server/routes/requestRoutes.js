@@ -22,8 +22,7 @@ router.patch("/status", updateRequestStatus);
 //restricted for hospital
 router.use(restrictTo("hospital"));
 router.post("/", sendEmailToDonors, createRequest);
-router.get("/", getAllRequestsForHospital);
-router.get("/getAllOpenRequest", getAllOpenRequests);
+router.get("/getAll", getAllRequestsForHospital);
 router.patch("/", updateRequest);
 router.delete("/", deleteRequest);
 export default router;
