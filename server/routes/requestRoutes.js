@@ -1,13 +1,16 @@
 import express from "express";
 import { protect } from "../controllers/authController.js";
 import {
-  createRequestAndSendEmail,
+  createRequest,
   deleteRequest,
   getAllOpenRequests,
   getAllRequestsForHospital,
   restrictTo,
+  sendEmailToDonors,
   updateRequest,
   updateRequestStatus,
+  sendEmailToDonors,
+  
 } from "../controllers/requestController.js";
 
 // import userController from "./../controllers/userController.js";
@@ -21,8 +24,8 @@ router.patch("/status", updateRequestStatus);
 //restricted for hospital
 router.use(restrictTo("hospital"));
 router.post("/", sendEmailToDonors, createRequest);
-router.get("/getAll", getAllRequestsForHospital);
-router.post("/", createRequestAndSendEmail);
+router.get("/", getAllRequestsForHospital);
+router.get("/getAllOpenRequest", getAllOpenRequests);
 router.patch("/", updateRequest);
 router.delete("/", deleteRequest);
 export default router;

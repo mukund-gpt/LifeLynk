@@ -14,7 +14,12 @@ const filterObj = (obj, ...allowedFields) => {
 
 export const updateRequest = async (req, res, next) => {
   try {
-    const { id } = req.body
+    const { id, status } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ status: 'fail', message: 'Request ID is required' });
+    }
+
     const filteredBody = filterObj(
       req.body,
       'patientName',
@@ -25,10 +30,24 @@ export const updateRequest = async (req, res, next) => {
       'status'
     );
 
-    const updatedRequest = await BloodRequest.findByIdAndUpdate(id, filteredBody, {
+    const update = { ...filteredBody };
+
+    if (status === 'booked') {
+      update.$addToSet = { donors: req.user._id }; // Ensure donor is added only once
+    }
+
+    if (status === 'open' && req.user.role === 'hospital') {
+      // Clear donor list
+      update.$set = { donors: [] };
+    }
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(id, update, {
       new: true,
       runValidators: true,
     });
+
+    if (!updatedRequest) {
+      return res.status(404).json({ status: 'fail', message: 'Request not found' });
+    }
 
     res.status(200).json({
       status: 'success',
@@ -37,9 +56,11 @@ export const updateRequest = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log("err: ", err.message)
+    console.error("err: ", err.message);
+    res.status(500).json({ status: 'fail', message: err.message });
   }
 };
+
 
 export const restrictTo = (...roles) => {
   return (req, res, next) => {

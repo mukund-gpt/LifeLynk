@@ -20,6 +20,6 @@ export const getAllOpenRequests = async () => {
 
 //update requirement status
 export const updateRequestStatus = async (payload) => {
-  const response = await axios.patch("/api/v1/requests/status", payload);
+  const response = await axios.patch("/api/v1/requests", payload);
   return response.data;
 };
