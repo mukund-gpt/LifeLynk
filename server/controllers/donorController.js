@@ -63,6 +63,8 @@ export const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getUser = factory.getOne(User);
+
 export const getDonorById = catchAsync(async (req, res, next) => {
   const donor = await Donor.findById(req.user._id);
 
@@ -77,10 +79,3 @@ export const getDonorById = catchAsync(async (req, res, next) => {
     },
   });
 });
-export const getUser = factory.getOne(User);
-
-
-
-
-
-

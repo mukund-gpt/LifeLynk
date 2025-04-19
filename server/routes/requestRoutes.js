@@ -27,4 +27,5 @@ router.get("/getAll", getAllRequestsForHospital);
 router.post("/", createRequestAndSendEmail);
 router.get("/getAllOpenRequest", getAllOpenRequests);
 router.delete("/", deleteRequest);
+
 export default router;

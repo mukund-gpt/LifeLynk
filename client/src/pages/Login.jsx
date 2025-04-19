@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button, Card, Typography } from "@mui/material";
 import { loginUser } from "../apis/userApi";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
@@ -20,7 +20,6 @@ const LoginPage = ({ setUser }) => {
         toast.error(data.message || "Login failed");
         return;
       }
-
       const user = data.data.user;
       const role = user?.role;
 
