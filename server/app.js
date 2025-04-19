@@ -66,6 +66,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/requests", requestRotuer);
+
 // Error handling for routes that don't exist
 // app.all("*", (req, res, next) => {
 //   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
