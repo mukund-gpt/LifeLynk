@@ -39,6 +39,7 @@ const HospitalRequests = () => {
             try {
                 setLoading(true)
                 const res = await axios.get("/api/v1/requests/getAll");
+                console.log("res: ", res)
                 setRequests(res.data.requests);
             } catch (err) {
                 console.error("Error fetching blood requests:", err);

@@ -27,19 +27,9 @@ export const updateRequest = async (req, res, next) => {
       'age',
       'unitsRequired',
       'bloodGroup',
-      'status'
     );
 
     const update = { ...filteredBody };
-
-    if (status === 'booked') {
-      update.donor = req.user._id; // Assign the donor directly
-    }
-
-    if (status === 'open' && req.user.role === 'hospital') {
-      // Clear the donor reference
-      update.donor = null;
-    }
 
     const updatedRequest = await BloodRequest.findByIdAndUpdate(id, update, {
       new: true,
@@ -85,15 +75,14 @@ export const restrictTo = (...roles) => {
 
 export const getAllRequestsForHospital = async (req, res) => {
   try {
-    const all = await BloodRequest.find();
-    console.log(all);
+    // const all = await BloodRequest.find().populate('donor', 'hospital');
+    // console.log(all);
 
     const hospitalId = req.user._id;
     // console.log(req);
-    const requests = await BloodRequest.find({ hospital: hospitalId }).populate(
-      "hospital",
-      "name location"
-    );
+    const requests = await BloodRequest.find({ hospital: hospitalId })
+      .populate("hospital", "name location")
+      .populate("donor");
 
     // Respond with the blood requests
     res.status(200).json({
