@@ -24,12 +24,18 @@ export const fetchCurrentUser = async () => {
   return res.data;
 };
 
+//update user
 export const updateUser = async (formData) => {
   console.log(formData);
     const response = await axios.patch("/api/v1/users/updateUser", formData);
     return response.data;
 }
 
+//logout user
+export const logoutUser = async () => {
+  const response = await axios.get("/api/v1/users/logout");
+  return response.data;
+};
 
 
 
