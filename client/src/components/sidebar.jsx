@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
+import axios from "axios"
 
 const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => {
   const navigate = useNavigate();
@@ -10,6 +11,16 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+  };
+
+  const handleLogout = async () => {
+    localStorage.removeItem("user")
+    try {
+      const res = await axios.get("/api/v1/users/logout")
+    } catch(err){
+      console.log("err: ", err.message)
+    }
+    navigate('/login');
   };
 
   return (
@@ -75,6 +86,18 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
                 Donors
               </Button>
             </li>
+
+            {/* Logout Button */}
+            <div className="pb-4">
+              <Button
+                onClick={handleLogout}
+                variant="outlined"
+                color="error"
+                className="w-full normal-case"
+              >
+                Logout
+              </Button>
+            </div>
           </ul>
         </nav>
       </div>

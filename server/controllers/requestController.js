@@ -131,7 +131,7 @@ export const getAllOpenRequests = async (req, res) => {
 
 export const createRequestAndSendEmail = async (req, res) => {
   try {
-    const { patientName, contactNumber, bloodGroup, unitsRequired } = req.body;
+    const { patientName, contactNumber, bloodGroup, unitsRequired, age } = req.body.request;
     const hospital = req.user._id;
 
     const newRequest = await BloodRequest.create({
@@ -140,6 +140,7 @@ export const createRequestAndSendEmail = async (req, res) => {
       bloodGroup,
       unitsRequired,
       hospital,
+      age
     });
 
     const hospitalDetails = await Hospital.findById(hospital);

@@ -1,15 +1,13 @@
 import express from "express";
 import { protect } from "../controllers/authController.js";
 import {
-  createRequest,
+  createRequestAndSendEmail,
   deleteRequest,
   getAllOpenRequests,
   getAllRequestsForHospital,
   restrictTo,
-  sendEmailToDonors,
   updateRequest,
   updateRequestStatus,
-  sendEmailToDonors,
   
 } from "../controllers/requestController.js";
 
@@ -22,10 +20,10 @@ router.get("/", getAllOpenRequests);
 router.patch("/status", updateRequestStatus);
 
 //restricted for hospital
-router.use(restrictTo("hospital"));
-router.post("/", sendEmailToDonors, createRequest);
-router.get("/", getAllRequestsForHospital);
-router.get("/getAllOpenRequest", getAllOpenRequests);
 router.patch("/", updateRequest);
+router.use(restrictTo("hospital"));
+router.get("/getAll", getAllRequestsForHospital);
+router.post("/", createRequestAndSendEmail);
+router.get("/getAllOpenRequest", getAllOpenRequests);
 router.delete("/", deleteRequest);
 export default router;
