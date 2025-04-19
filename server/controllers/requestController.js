@@ -1,5 +1,8 @@
 import BloodRequest from "../models/requestModel.js";
 import * as factory from "./handlerFactory.js";
+import Hospital from "../models/hospitalModel.js";
+import User from "../models/userModel.js";
+import { sendMail } from "../utils/sendEmail.js";
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -34,32 +37,6 @@ export const updateRequest = async (req, res, next) => {
     });
   } catch (err) {
     console.log("err: ", err.message)
-  }
-};
-
-export const createRequest = async (req, res) => {
-  try {
-    const { patientName, contactNumber, bloodGroup, unitsRequired, age } = req.body.request;
-    const hospital = req.user._id;
-
-    const newRequest = await BloodRequest.create({
-      patientName,
-      contactNumber,
-      bloodGroup,
-      age: Number(age),
-      unitsRequired: Number(unitsRequired),
-      hospital,
-    });
-
-    res.status(201).json({
-      status: "success",
-      newRequest,
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "fail",
-      message: error.message,
-    });
   }
 };
 
@@ -129,36 +106,42 @@ export const getAllOpenRequests = async (req, res) => {
   }
 };
 
-export const getAllRequests = factory.getAll(BloodRequest);
 
-import User from "../models/userModel.js";
-import Hospital from "../models/hospitalModel.js";
-import AppError from "../utils/appError.js";
-
-export const sendEmailToDonors = async (req, res, next) => {
+export const createRequestAndSendEmail = async (req, res) => {
   try {
-    const hospitalId = req.user._id;
+    const { patientName, contactNumber, bloodGroup, unitsRequired } = req.body;
+    const hospital = req.user._id;
 
-    const hospital = await Hospital.findById(hospitalId);
-    if (!hospital || !hospital.location || !hospital.location.coordinates) {
-      return next(new AppError("Hospital or location not found", 404));
+    const newRequest = await BloodRequest.create({
+      patientName,
+      contactNumber,
+      bloodGroup,
+      unitsRequired,
+      hospital,
+    });
+
+    const hospitalDetails = await Hospital.findById(hospital);
+    if (!hospitalDetails || !hospitalDetails.location?.coordinates) {
+      return res.status(404).json({
+        status: "fail",
+        message: "Hospital or location not found",
+      });
     }
 
-    const [longitude, latitude] = hospital.location.coordinates;
-    const earthRadius = 6371; // Earth's radius in km
-    const radius = 20; // Search radius in km
-
-    const { bloodGroup, unitsRequired } = req.body;
+    const [longitude, latitude] = hospitalDetails.location.coordinates;
+    const radius = 200;
+    const earthRadius = 6371;
 
     const donors = await User.find({
       role: "donor",
-      bloodGroup,
       location: {
         $geoWithin: {
           $centerSphere: [[longitude, latitude], radius / earthRadius],
         },
       },
     });
+
+    console.log(donors);
 
     if (!donors.length) {
       return res.status(404).json({
@@ -167,13 +150,20 @@ export const sendEmailToDonors = async (req, res, next) => {
       });
     }
 
-    // TODO: Send email to each donor (use nodemailer, etc.)
+    for (const donor of donors) {
+      await sendMail(
+        donor.email,
+        "Urgent Blood Donation Needed",
+        `Dear ${donor.name},\n\nWe urgently need blood group ${bloodGroup} at ${hospitalDetails.name}. Your help can save a life!\n\nRegards,\n${hospitalDetails.name} Team`
+      );
+    }
 
-    res.status(200).json({
+    res.status(201).json({
       status: "success",
-      message: "Emails sent to donors successfully",
+      message: "Request created and emails sent",
       data: {
-        donors,
+        request: newRequest,
+        donorsNotified: donors.length,
       },
     });
   } catch (error) {
