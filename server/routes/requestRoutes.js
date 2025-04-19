@@ -1,12 +1,11 @@
 import express from "express";
 import { protect } from "../controllers/authController.js";
 import {
-  createRequest,
+  createRequestAndSendEmail,
   deleteRequest,
   getAllOpenRequests,
   getAllRequestsForHospital,
   restrictTo,
-  sendEmailToDonors,
   updateRequest,
   updateRequestStatus,
 } from "../controllers/requestController.js";
@@ -23,6 +22,7 @@ router.patch("/status", updateRequestStatus);
 router.use(restrictTo("hospital"));
 router.post("/", sendEmailToDonors, createRequest);
 router.get("/getAll", getAllRequestsForHospital);
+router.post("/", createRequestAndSendEmail);
 router.patch("/", updateRequest);
 router.delete("/", deleteRequest);
 export default router;

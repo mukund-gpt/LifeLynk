@@ -63,6 +63,20 @@ export const deleteMe = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getDonorById = catchAsync(async (req, res, next) => {
+  const donor = await Donor.findById(req.user._id);
+
+  if (!donor) {
+    return next(new AppError("No donor found with that ID", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      donor,
+    },
+  });
+});
 export const getUser = factory.getOne(User);
 
 export const getDonorById = catchAsync(async (req, res, next) => {
