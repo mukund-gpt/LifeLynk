@@ -48,11 +48,9 @@ export const signup = catchAsync(async (req, res, next) => {
     passwordChangedAt,
     contact,
     location,
-    radiusKm,
     bloodGroup,
     metaMaskId,
     licenseNumber,
-    address,
     hospitalName,
   } = req.body;
 
@@ -67,7 +65,6 @@ export const signup = catchAsync(async (req, res, next) => {
       passwordChangedAt,
       contact,
       location,
-      radiusKm,
       bloodGroup,
       metaMaskId,
     });
@@ -79,7 +76,7 @@ export const signup = catchAsync(async (req, res, next) => {
       passwordConfirm,
       passwordChangedAt,
       contact,
-      address,
+      location,
       hospitalName,
       licenseNumber,
       metaMaskId,
@@ -92,7 +89,6 @@ export const signup = catchAsync(async (req, res, next) => {
       )
     );
   }
-
   createSendToken(newUser, 201, res);
 });
 

@@ -7,8 +7,6 @@ import {
   getAllRequestsForHospital,
   restrictTo,
   updateRequest,
-  updateRequestStatus,
-  
 } from "../controllers/requestController.js";
 
 // import userController from "./../controllers/userController.js";
@@ -17,8 +15,6 @@ const router = express.Router();
 
 router.use(protect);
 router.get("/", getAllOpenRequests);
-router.patch("/status", updateRequestStatus);
-
 
 router.patch("/", updateRequest);
 //restricted for hospital

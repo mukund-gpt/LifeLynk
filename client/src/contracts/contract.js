@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import ABI from "../abi/BloodDonationABI.json";
 
-const CONTRACT_ADDRESS = "0xBa1BF52799d5Fc231117AC2c728AEAb4835D3416";
+const CONTRACT_ADDRESS = "0x867FCD1419Cd955E7EFbC85B7C2859F32f53c4B9";
 
 export async function getContract() {
   if (!window.ethereum) {
