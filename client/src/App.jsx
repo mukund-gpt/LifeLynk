@@ -22,9 +22,17 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route
+      <Route
           path="/"
-          element={<div className="text-red-100">Hello world</div>}
+          element={
+            user.role === "hospital" ? (
+              <Navigate to="/hospitalProfile" />
+            ) : user.role === "donor" ? (
+              <Navigate to="/dashboard/profile" />
+            ) : (
+              <Login />
+            )
+          }
         />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />

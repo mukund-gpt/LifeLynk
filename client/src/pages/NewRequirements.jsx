@@ -50,7 +50,7 @@ const NewRequirements = () => {
   useEffect(() => {
     fetchRequirements(); // Initial fetch
 
-    intervalRef.current = setInterval(fetchRequirements, 1000); // Poll every 1s
+    intervalRef.current = setInterval(fetchRequirements, 500000); // Poll every 500s
 
     return () => clearInterval(intervalRef.current); // Cleanup
   }, []);
