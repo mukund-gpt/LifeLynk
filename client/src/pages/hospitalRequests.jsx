@@ -34,7 +34,8 @@ const HospitalRequests = () => {
     useEffect(() => {
         const fetchRequests = async () => {
             try {
-                const res = await axios.get("/api/v1/requests/");
+                const res = await axios.get("/api/v1/requests/getAll");
+                console.log("resBody: ", res.data.requests)
                 setRequests(res.data.requests);
             } catch (err) {
                 console.error("Error fetching blood requests:", err);

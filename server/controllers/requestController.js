@@ -21,7 +21,8 @@ export const updateRequest = async (req, res, next) => {
       'contactNumber',
       'age',
       'unitsRequired',
-      'bloodGroup'
+      'bloodGroup',
+      'status'
     );
 
     const updatedRequest = await BloodRequest.findByIdAndUpdate(id, filteredBody, {
