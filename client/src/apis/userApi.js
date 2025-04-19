@@ -24,6 +24,12 @@ export const fetchCurrentUser = async () => {
   return res.data;
 };
 
+export const updateUser = async (formData) => {
+  console.log(formData);
+    const response = await axios.patch("/api/v1/users/updateUser", formData);
+    return response.data;
+}
+
 
 
 
