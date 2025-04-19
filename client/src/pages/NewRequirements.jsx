@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Typography,
   Card,
@@ -32,20 +32,27 @@ const NewRequirements = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedReq, setSelectedReq] = useState(null);
+  const intervalRef = useRef(null);
+
+  const fetchRequirements = async () => {
+    try {
+      const data = await getAllOpenRequests();
+      setRequirements(data.requests);
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching requirements:", err);
+      setError("An error occurred while fetching the requirements.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getRequirements = async () => {
-      try {
-        const data = await getAllOpenRequests();
-        setRequirements(data.requests);
-      } catch (error) {
-        console.error("Error fetching requirements:", error);
-        setError("An error occurred while fetching the requirements.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    getRequirements();
+    fetchRequirements(); // Initial fetch
+
+    intervalRef.current = setInterval(fetchRequirements, 500000); // Poll every 500s
+
+    return () => clearInterval(intervalRef.current); // Cleanup
   }, []);
 
   const handleVolunteer = async (requestId) => {
@@ -57,6 +64,7 @@ const NewRequirements = () => {
       await updateRequestStatus(payload);
       toast.success("You have volunteered successfully!");
       setSelectedReq(null);
+      fetchRequirements(); // Refresh list immediately
     } catch (error) {
       console.error("Error updating request status:", error);
       toast.error("Something went wrong. Try again.");

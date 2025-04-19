@@ -4,32 +4,43 @@ import { loginUser } from "../apis/userApi";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-const LoginPage = () => {
+const LoginPage = ({ setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     try {
       const data = await loginUser(email, password);
+      console.log("🟢 Full login response:", data);
 
       if (data.status !== "success") {
         toast.error(data.message || "Login failed");
         return;
       }
+      const user = data.data.user;
+      const role = user?.role;
 
-      toast.success("Login successful");
-      localStorage.setItem("user", JSON.stringify(data.data.user));
-      console.log(data.data.user);
+      console.log("🔍 Logged-in role:", role);
 
-      if (data.data.user.role === "hospital") {
+      // Set user in parent App state
+      setUser(user);
+      toast.success("Login successful!");
+
+      // Navigate based on role
+      if (role === "hospital") {
         navigate("/hospitalProfile");
-      } else if (data.data.user.role === "donor") {
-        navigate("/dashboard");
+      } else if (role === "donor") {
+        navigate("/dashboard/profile");
+      } else {
+        toast.error("Invalid role. Contact support.");
+        navigate("/login");
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Login failed");
+      console.error("🔥 Login error:", err);
+      toast.error(err.response?.data?.message || "Login failed. Please try again.");
     }
   };
 
@@ -72,7 +83,6 @@ const LoginPage = () => {
           </Button>
         </form>
 
-        {/* Register Button */}
         <Button
           variant="text"
           fullWidth

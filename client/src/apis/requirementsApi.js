@@ -10,7 +10,7 @@ export const createRequirement = async (formData) => {
   return response.data;
 }
 export const getAllOpenRequests = async () => {
-  const response = await axios.get("/api/v1/requests/open");
+  const response = await axios.get("/api/v1/requests");
   return response.data;
 }
 // export const updateRequirement = async (formData) => {      
@@ -20,6 +20,6 @@ export const getAllOpenRequests = async () => {
 
 //update requirement status
 export const updateRequestStatus = async (payload) => {
-  const response = await axios.patch("/api/v1/requests/status", payload);
+  const response = await axios.patch("/api/v1/requests", payload);
   return response.data;
 };

@@ -8,6 +8,7 @@ import {
   restrictTo,
   updateRequest,
   updateRequestStatus,
+  
 } from "../controllers/requestController.js";
 
 // import userController from "./../controllers/userController.js";
@@ -18,11 +19,13 @@ router.use(protect);
 router.get("/", getAllOpenRequests);
 router.patch("/status", updateRequestStatus);
 
+
+router.patch("/", updateRequest);
 //restricted for hospital
 router.use(restrictTo("hospital"));
 router.get("/getAll", getAllRequestsForHospital);
 router.post("/", createRequestAndSendEmail);
-router.patch("/", updateRequest);
+router.get("/getAllOpenRequest", getAllOpenRequests);
 router.delete("/", deleteRequest);
 
 export default router;
