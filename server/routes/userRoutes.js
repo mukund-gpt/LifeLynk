@@ -6,14 +6,7 @@ import {
   protect,
 } from "../controllers/authController.js";
 
-import {
-  getMe,
-  updateMe,
-  deleteMe,
-  getUser,
-  createUser,
-  getDonorById,
-} from "../controllers/donorController.js";
+import { updateMe, getDonorById } from "../controllers/donorController.js";
 
 const router = express.Router();
 

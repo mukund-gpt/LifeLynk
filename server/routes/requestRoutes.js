@@ -2,6 +2,7 @@ import express from "express";
 import { protect } from "../controllers/authController.js";
 import {
   createRequest,
+  getAllOpenRequests,
   getAllRequestsForHospital,
   restrictTo,
   sendEmailToDonors,
