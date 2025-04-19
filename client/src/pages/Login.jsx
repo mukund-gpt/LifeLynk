@@ -1,27 +1,47 @@
-import React, { useState } from 'react';
-import { TextField, Button, Card, Typography } from '@mui/material';
-import { loginUser } from '../apis/userApi'; 
+import React, { useState } from "react";
+import { TextField, Button, Card, Typography } from "@mui/material";
+import { loginUser } from "../apis/userApi";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       const data = await loginUser(email, password);
-      console.log(data); 
+
+      if (data.status !== "success") {
+        alert(data.message || "Login failed");
+        return;
+      }
+
+      alert("Login successful");
+      localStorage.setItem("user", JSON.stringify(data.data.user));
+      console.log(data.data.user);
+
+      if (data.data.user.role === "hospital") {
+        navigate("/hospitalProfile");
+      } else if (data.data.user.role === "donor") {
+        navigate("/dashboard");
+      }
     } catch (err) {
-      alert(err.response?.data?.message || 'Login failed');
+      alert(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-white">
       <Card className="p-8 w-full max-w-md shadow-2xl rounded-2xl">
-        <Typography variant="h5" className="mb-6 text-center font-semibold text-blue-700">
+        <Typography
+          variant="h5"
+          className="mb-6 text-center font-semibold text-blue-700"
+        >
           Login to Your Account
         </Typography>
+
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <TextField
             label="Email"
@@ -50,6 +70,16 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
+
+        {/* Register Button */}
+        <Button
+          variant="text"
+          fullWidth
+          className="!mt-4 !text-blue-600"
+          onClick={() => navigate("/register")}
+        >
+          Don’t have an account? Register
+        </Button>
       </Card>
     </div>
   );

@@ -30,7 +30,7 @@ const bloodRequestSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["open", "closed"],
+    enum: ["open", "closed", "booked"],
     default: "open",
   },
   createdAt: {

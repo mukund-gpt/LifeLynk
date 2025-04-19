@@ -4,6 +4,42 @@ import Hospital from "../models/hospitalModel.js";
 import User from "../models/userModel.js";
 import { sendMail } from "../utils/sendEmail.js";
 
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
+export const updateRequest = async (req, res, next) => {
+  try {
+    const { id } = req.body
+    const filteredBody = filterObj(
+      req.body,
+      'patientName',
+      'contactNumber',
+      'age',
+      'unitsRequired',
+      'bloodGroup'
+    );
+
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(id, filteredBody, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        request: updatedRequest,
+      },
+    });
+  } catch (err) {
+    console.log("err: ", err.message)
+  }
+};
+
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     try {
@@ -69,6 +105,7 @@ export const getAllOpenRequests = async (req, res) => {
     });
   }
 };
+
 
 export const createRequestAndSendEmail = async (req, res) => {
   try {
@@ -136,3 +173,41 @@ export const createRequestAndSendEmail = async (req, res) => {
     });
   }
 };
+//delete request
+export const deleteRequest = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await BloodRequest.findByIdAndDelete(id);
+    return res.status(200).json({ message: "Deleted successfully" });
+  } catch (err) {
+    console.log("error: ", err.message);
+    return res.status(500).json({ message: "Server error" });
+
+  }
+};
+
+//update request status
+export const updateRequestStatus = async (req, res) => {
+  try {
+    console.log(req);
+    const { id, status } = req.body;
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        request: updatedRequest,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating request status:", error);
+    res.status(500).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+

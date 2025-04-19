@@ -21,8 +21,10 @@ import {
   VisibilityOff,
 } from "@mui/icons-material";
 import { registerUser } from "../apis/userApi";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [role, setRole] = useState("donor");
   const [formData, setFormData] = useState({
     name: "",
@@ -46,8 +48,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(formData, role);
       const data = await registerUser(formData, role);
-      alert("Registration successful!");
+      // localStorage.setItem("user", JSON.stringify(data));
+      // alert("Registration successful!");
       setFormData({
         name: "",
         email: "",
@@ -57,10 +61,7 @@ const Register = () => {
         bloodGroup: "",
       });
     } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        "Something went wrong. Please try again.";
-      alert(message);
+      alert(error.message);
     }
   };
 
@@ -136,7 +137,9 @@ const Register = () => {
                 ),
                 endAdornment: (
                   <InputAdornment position="end">
-                    <IconButton onClick={() => setShowPassword((prev) => !prev)}>
+                    <IconButton
+                      onClick={() => setShowPassword((prev) => !prev)}
+                    >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
@@ -216,6 +219,15 @@ const Register = () => {
             </Button>
           </Box>
         </form>
+        {/* Login Button */}
+        <Button
+          variant="text"
+          fullWidth
+          className="!mt-4 !text-blue-600"
+          onClick={() => navigate("/login")}
+        >
+          Have an account? Login
+        </Button>
       </Paper>
     </Container>
   );

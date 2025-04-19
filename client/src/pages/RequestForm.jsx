@@ -7,6 +7,7 @@ import {
     DialogActions,
     TextField,
     Button,
+    MenuItem
 } from "@mui/material";
 
 const RequestForm = ({ closeRequestFormDialog }) => {
@@ -25,17 +26,19 @@ const RequestForm = ({ closeRequestFormDialog }) => {
         }));
     };
 
-    const handleRequestFormSubmit = async() => {
-        try{
+    const handleRequestFormSubmit = async () => {
+        try {
             const res = await axios.post("/api/v1/requests/", {
                 request
             })
             console.log("resp: ", res.data)
-        } catch(err){
+        } catch (err) {
             console.log("error: ", err.message)
         }
         closeRequestFormDialog(); // Close the form dialog
     };
+
+    const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
     return (
         <Dialog
@@ -65,14 +68,20 @@ const RequestForm = ({ closeRequestFormDialog }) => {
                     onChange={(e) => handleInputChange("age", e.target.value)}
                 />
                 <TextField
+                    select
                     margin="dense"
                     id="blood-type"
                     label="Blood Type"
-                    type="text"
                     fullWidth
                     value={request.bloodGroup}
                     onChange={(e) => handleInputChange("bloodGroup", e.target.value)}
-                />
+                >
+                    {bloodTypes.map((type) => (
+                        <MenuItem key={type} value={type}>
+                            {type}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <TextField
                     margin="dense"
                     id="units-required"

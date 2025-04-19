@@ -7,6 +7,10 @@ import {
     DialogActions,
     TextField,
     Button,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
 } from "@mui/material";
 
 const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
@@ -19,14 +23,15 @@ const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
         }));
     };
 
-    const handleEditRequestFormSubmit = async() => {
-        try{
+    const handleEditRequestFormSubmit = async () => {
+        try {
             const res = await axios.patch("/api/v1/requests/", {
-                ...request, id
-            })
-            console.log("res: ", res)
-        } catch(error){
-            console.log("error: ", error.message)
+                ...request,
+                id
+            });
+            console.log("res: ", res);
+        } catch (error) {
+            console.log("error: ", error.message);
         }
         closeRequestFormDialog();
     };
@@ -70,6 +75,18 @@ const EditRequestForm = ({ closeRequestFormDialog, requestData, id }) => {
                     value={request.unitsRequired}
                     onChange={(e) => handleInputChange("unitsRequired", e.target.value)}
                 />
+                <FormControl fullWidth margin="dense">
+                    <InputLabel>Status</InputLabel>
+                    <Select
+                        value={request.status}
+                        label="Status"
+                        onChange={(e) => handleInputChange("status", e.target.value)}
+                    >
+                        <MenuItem value="open">Open</MenuItem>
+                        <MenuItem value="booked">Booked</MenuItem>
+                        <MenuItem value="closed">Closed</MenuItem>
+                    </Select>
+                </FormControl>
             </DialogContent>
             <DialogActions>
                 <Button onClick={closeRequestFormDialog} color="primary">
