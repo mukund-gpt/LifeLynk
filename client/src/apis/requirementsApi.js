@@ -17,3 +17,9 @@ export const getAllOpenRequests = async () => {
 //   const response = await axios.patch("/api/v1/requirements", formData);
 //   return response.data;
 // }
+
+//update requirement status
+export const updateRequestStatus = async (payload) => {
+  const response = await axios.patch("/api/v1/requests/status", payload);
+  return response.data;
+};

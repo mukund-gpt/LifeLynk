@@ -183,7 +183,7 @@ export const sendEmailToDonors = async (req, res, next) => {
     });
   }
 };
-
+//delete request
 export const deleteRequest = async (req, res) => {
   try {
     const { id } = req.body;
@@ -195,3 +195,29 @@ export const deleteRequest = async (req, res) => {
 
   }
 };
+
+//update request status
+export const updateRequestStatus = async (req, res) => {
+  try {
+    console.log(req);
+    const { id, status } = req.body;
+    const updatedRequest = await BloodRequest.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        request: updatedRequest,
+      },
+    });
+  } catch (error) {
+    console.error("Error updating request status:", error);
+    res.status(500).json({
+      status: "fail",
+      message: error.message,
+    });
+  }
+};
+
