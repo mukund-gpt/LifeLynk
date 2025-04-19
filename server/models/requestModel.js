@@ -23,9 +23,9 @@ const bloodRequestSchema = new mongoose.Schema({
     ref: "hospital",
     required: true,
   },
-  doner: {
+  donor: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "donor",
     required: false,
   },
   status: {
