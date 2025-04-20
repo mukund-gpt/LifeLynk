@@ -68,10 +68,10 @@ LIFELYNK allows hospitals to create and publish blood donation requests, which a
 
 | Name               | Roll Number |
 |--------------------|-------------|
-| Prakhar Garg       | 20233214    |
-| Rahul Kumar Singh  | 20233228    |
-| Ravindra Rinwa     | 20233230    |
-| Mukund Bihari Gupta| 20233191    |
+| [Prakhar Garg](https://github.com/Prakhar-Garg7)      | 20233214    |
+| [Rahul Kumar Singh](https://github.com/Rahul10182)  | 20233228    |
+| [Ravindra Rinwa](https://github.com/RavindraRinwa)   | 20233230    |
+| [Mukund Bihari Gupta](https://github.com/mukund-gpt)| 20233191    |
 
 ---
 
