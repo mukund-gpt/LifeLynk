@@ -56,14 +56,6 @@ LIFELYNK allows hospitals to create and publish blood donation requests, which a
 - **Email Notifications**: Nodemailer  
 - **Geolocation**: Reverse Geocoding API
 
----
-
-## 📸 Screenshots
-
-*(Add relevant UI screenshots here)*
-
----
-
 ## 🧑‍🤝‍🧑 Team Members
 
 | Name               | Roll Number |
@@ -81,3 +73,8 @@ LIFELYNK allows hospitals to create and publish blood donation requests, which a
    ```bash
    git clone https://github.com/your-repo/lifelynk.git
    cd lifelynk
+
+---
+
+### Made at:
+<a href="https://hack36.in"> <img src="https://postimage.me/images/2025/04/19/built-at-hack36.png" height=24px> </a>
