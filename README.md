@@ -54,7 +54,7 @@ LIFELYNK allows hospitals to create and publish blood donation requests, which a
 - **Database**: MongoDB  
 - **Blockchain**: Solidity, Smart Contracts, ethers.js  
 - **Email Notifications**: Nodemailer  
-- **Geolocation**: Google Maps API / Geocoding API
+- **Geolocation**: Reverse Geocoding API
 
 ---
 
