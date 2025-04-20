@@ -1,3 +1,5 @@
+<a href="https://hack36.in"> <img src="https://postimage.me/images/2025/04/19/built-at-hack36.png" height=24px> </a>
+
 # 🩸 LIFELYNK - Blood Donation Management System
 
 **Theme**: Community and Upliftment  
@@ -16,6 +18,12 @@
 LIFELYNK allows hospitals to create and publish blood donation requests, which are automatically distributed to nearby potential donors based on location (within a 20 km radius). Donors can view and book requests via their personalized dashboard. Once a donor applies, hospitals can review the application and either approve or reject it. Successful donations are permanently recorded on the blockchain, creating a tamper-proof history and increasing trust in the process.
 
 ---
+
+## Demo Video Link:
+  <a href="https://drive.google.com/drive/folders/1WvmOx6ugLnkvfTxDY9LP80B9lUEeqLVG">Video link</a>
+  
+## Presentation Link:
+<a href="https://www.canva.com/design/DAGlI2K3Hb8/fLotGzgMrfQMIorthAKhJg/edit?utm_content=DAGlI2K3Hb8&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">PPT link</a>
 
 ## 🚀 Key Features
 
