@@ -24,6 +24,7 @@ import {
 import { registerUser } from "../apis/userApi";
 import { reverseGeocode } from "../apis/locationApi";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Register = () => {
       setLocation(null);
       setAddress("");
     } catch (error) {
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 

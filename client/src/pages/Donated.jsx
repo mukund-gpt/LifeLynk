@@ -54,7 +54,14 @@ const Donated = () => {
         <Grid container spacing={3}>
           {donations.map((donation, idx) => (
             <Grid item xs={12} md={6} key={idx}>
-              <Card sx={{ p: 2, borderLeft: "5px solid #ef4444" }}>
+              <Card
+                sx={{
+                  p: 2,
+                  borderLeft: "5px solid #ef4444",
+                  width: 360,
+                  height: 250,
+                }}
+              >
                 <CardContent>
                   <Box display="flex" alignItems="center" gap={2}>
                     <Avatar sx={{ bgcolor: "#ef4444" }}>

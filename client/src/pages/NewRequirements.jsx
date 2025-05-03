@@ -11,7 +11,10 @@ import {
   Modal,
 } from "@mui/material";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import { getAllOpenRequests, updateRequestStatus } from "../apis/requirementsApi";
+import {
+  getAllOpenRequests,
+  updateRequestStatus,
+} from "../apis/requirementsApi";
 import { Toaster, toast } from "react-hot-toast";
 
 const modalStyle = {
@@ -83,7 +86,9 @@ const NewRequirements = () => {
   if (error) {
     return (
       <Box display="flex" justifyContent="center" mt={6}>
-        <Typography variant="h6" color="error">{error}</Typography>
+        <Typography variant="h6" color="error">
+          {error}
+        </Typography>
       </Box>
     );
   }
@@ -169,7 +174,6 @@ const NewRequirements = () => {
               <Typography variant="body2">
                 Contact: {selectedReq.hospital.contact}
               </Typography>
-
 
               <Typography variant="subtitle1" fontWeight="bold" mt={2}>
                 Patient Contact:

@@ -20,7 +20,7 @@ import {
   Chip,
   Paper,
   IconButton,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import {
   Verified as VerifiedIcon,
@@ -32,7 +32,7 @@ import {
   MedicalServices,
   Business,
   Edit,
-  AssignmentInd
+  AssignmentInd,
 } from "@mui/icons-material";
 import LoadingPage from "../components/loading";
 import { reverseGeocode } from "../apis/locationApi";
@@ -97,7 +97,9 @@ const HospitalProfile = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f5f7fa' }}>
+    <Box
+      sx={{ display: "flex", minHeight: "100vh", backgroundColor: "#f5f7fa" }}
+    >
       {loading && <LoadingPage />}
 
       <Sidebar
@@ -108,7 +110,7 @@ const HospitalProfile = () => {
       />
 
       <Box component="main" sx={{ flexGrow: 1, p: { xs: 2, md: 4 } }}>
-        <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+        <Box sx={{ maxWidth: 1200, mx: "auto" }}>
           {showEditProfileForm && (
             <EditProfileForm
               closeProfileEditFormDialog={closeProfileEditFormDialog}
@@ -117,26 +119,39 @@ const HospitalProfile = () => {
             />
           )}
 
-          <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e0e0e0', mb: 4 }}>
+          <Card
+            elevation={0}
+            sx={{ borderRadius: 3, border: "1px solid #e0e0e0", mb: 4 }}
+          >
             <CardContent sx={{ p: 4 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar 
-                    sx={{ 
-                      width: 80, 
-                      height: 80, 
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  mb: 3,
+                }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <Avatar
+                    sx={{
+                      width: 80,
+                      height: 80,
                       mr: 3,
-                      bgcolor: 'primary.main',
-                      fontSize: '2rem'
+                      bgcolor: "primary.main",
+                      fontSize: "2rem",
                     }}
                   >
-                    {profileData.hospitalName?.charAt(0) || 'H'}
+                    {profileData.hospitalName?.charAt(0) || "H"}
                   </Avatar>
                   <Box>
-                    <Typography variant="h4" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                    <Typography
+                      variant="h4"
+                      sx={{ fontWeight: 600, color: "text.primary" }}
+                    >
                       {profileData.hospitalName || "Hospital Name"}
                     </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
                       {profileData.licenseNumber ? (
                         <Chip
                           icon={<VerifiedIcon />}
@@ -155,8 +170,8 @@ const HospitalProfile = () => {
                         />
                       )}
                       <Tooltip title="Edit Profile">
-                        <IconButton 
-                          size="small" 
+                        <IconButton
+                          size="small"
                           onClick={openProfileEditFormDialog}
                           sx={{ ml: 1 }}
                         >
@@ -166,17 +181,17 @@ const HospitalProfile = () => {
                     </Box>
                   </Box>
                 </Box>
-                
+
                 {!profileData.licenseNumber && (
                   <Button
                     variant="contained"
                     startIcon={<AssignmentInd />}
                     onClick={() => setShowLicenseForm(true)}
-                    sx={{ 
-                      textTransform: 'none',
+                    sx={{
+                      textTransform: "none",
                       borderRadius: 2,
                       px: 3,
-                      py: 1
+                      py: 1,
                     }}
                   >
                     Submit License
@@ -188,30 +203,45 @@ const HospitalProfile = () => {
 
               <Grid container spacing={4}>
                 <Grid item xs={12} md={6}>
-                  <Paper elevation={0} sx={{ p: 3, borderRadius: 2, backgroundColor: 'background.paper' }}>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 3,
+                      borderRadius: 2,
+                      backgroundColor: "background.paper",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}
+                    >
                       Hospital Information
                     </Typography>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <Business color="action" sx={{ mr: 2 }} />
                       <Typography variant="body1">
-                        <strong>Hospital Type:</strong> {profileData.hospitalType || "N/A"}
+                        <strong>Hospital Type:</strong>{" "}
+                        {profileData.hospitalType || "N/A"}
                       </Typography>
                     </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <MedicalServices color="action" sx={{ mr: 2 }} />
                       <Typography variant="body1">
-                        <strong>Specializations:</strong> {profileData.specializations?.join(", ") || "General"}
+                        <strong>Specializations:</strong>{" "}
+                        {profileData.specializations?.join(", ") || "General"}
                       </Typography>
                     </Box>
-                    
+
                     {profileData.licenseNumber && (
-                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                      >
                         <VerifiedIcon color="action" sx={{ mr: 2 }} />
                         <Typography variant="body1">
-                          <strong>License No:</strong> {profileData.licenseNumber}
+                          <strong>License No:</strong>{" "}
+                          {profileData.licenseNumber}
                         </Typography>
                       </Box>
                     )}
@@ -219,26 +249,36 @@ const HospitalProfile = () => {
                 </Grid>
 
                 <Grid item xs={12} md={6}>
-                  <Paper elevation={0} sx={{ p: 3, borderRadius: 2, backgroundColor: 'background.paper' }}>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 3,
+                      borderRadius: 2,
+                      backgroundColor: "background.paper",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}
+                    >
                       Contact Details
                     </Typography>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <Badge color="action" sx={{ mr: 2 }} />
                       <Typography variant="body1">
                         <strong>Admin:</strong> {profileData.name || "N/A"}
                       </Typography>
                     </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <Email color="action" sx={{ mr: 2 }} />
                       <Typography variant="body1">
                         <strong>Email:</strong> {profileData.email || "N/A"}
                       </Typography>
                     </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+
+                    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                       <Phone color="action" sx={{ mr: 2 }} />
                       <Typography variant="body1">
                         <strong>Phone:</strong> {profileData.contact || "N/A"}
@@ -248,22 +288,33 @@ const HospitalProfile = () => {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Paper elevation={0} sx={{ p: 3, borderRadius: 2, backgroundColor: 'background.paper' }}>
-                    <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: 'text.primary' }}>
+                  <Paper
+                    elevation={0}
+                    sx={{
+                      p: 3,
+                      borderRadius: 2,
+                      backgroundColor: "background.paper",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, fontWeight: 600, color: "text.primary" }}
+                    >
                       Location
                     </Typography>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+
+                    <Box sx={{ display: "flex", alignItems: "flex-start" }}>
                       <LocationOn color="action" sx={{ mr: 2, mt: 0.5 }} />
                       <Typography variant="body1">
                         {address || "Location information loading..."}
                       </Typography>
                     </Box>
-                    
+
                     {profileData.location?.coordinates && (
                       <Box sx={{ mt: 2 }}>
                         <Typography variant="caption" color="text.secondary">
-                          Coordinates: {profileData.location.coordinates.join(", ")}
+                          Coordinates:{" "}
+                          {profileData.location.coordinates.join(", ")}
                         </Typography>
                       </Box>
                     )}
@@ -283,22 +334,25 @@ const HospitalProfile = () => {
         fullWidth
         PaperProps={{ sx: { borderRadius: 3 } }}
       >
-        <DialogTitle sx={{ 
-          backgroundColor: 'primary.main', 
-          color: 'common.white',
-          fontWeight: 600,
-          py: 2,
-          px: 3
-        }}>
+        <DialogTitle
+          sx={{
+            backgroundColor: "primary.main",
+            color: "common.white",
+            fontWeight: 600,
+            py: 2,
+            px: 3,
+          }}
+        >
           Hospital License Verification
         </DialogTitle>
 
         <DialogContent sx={{ p: 4 }}>
           <Typography variant="body1" sx={{ mb: 3 }}>
-            Please enter your hospital's official license number for verification. 
-            This information will be reviewed by our administration team.
+            Please enter your hospital's official license number for
+            verification. This information will be reviewed by our
+            administration team.
           </Typography>
-          
+
           <TextField
             autoFocus
             label="License Number"
@@ -308,22 +362,26 @@ const HospitalProfile = () => {
             value={licenseNumber}
             onChange={(e) => setLicenseNumber(e.target.value)}
             InputProps={{
-              sx: { borderRadius: 2 }
+              sx: { borderRadius: 2 },
             }}
           />
-          
-          <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ mt: 1, display: "block" }}
+          >
             Example: MH-12345-2023 or similar format as per your region
           </Typography>
         </DialogContent>
 
         <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button 
+          <Button
             onClick={() => setShowLicenseForm(false)}
-            sx={{ 
+            sx={{
               borderRadius: 2,
               px: 3,
-              textTransform: 'none'
+              textTransform: "none",
             }}
           >
             Cancel
@@ -331,10 +389,10 @@ const HospitalProfile = () => {
           <Button
             onClick={handleLicenseFormSubmit}
             variant="contained"
-            sx={{ 
+            sx={{
               borderRadius: 2,
               px: 3,
-              textTransform: 'none'
+              textTransform: "none",
             }}
           >
             Submit for Verification

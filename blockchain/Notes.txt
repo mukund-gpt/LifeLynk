@@ -6,10 +6,6 @@ npx hardhat node
 npx hardhat run scripts/deploy.js --network localhost
 npx hardhat run scripts/deploy.js --network linea_sepolia
 
-#old
-Deploying contracts with: 0x6062dA5f7251cc31a17637cc4bc4d0fd289565dB
-BloodDonation deployed to: 0xBa1BF52799d5Fc231117AC2c728AEAb4835D3416
-
-#net
+#new
 Deploying contracts with: 0x6062dA5f7251cc31a17637cc4bc4d0fd289565dB
 BloodDonation deployed to: 0x867FCD1419Cd955E7EFbC85B7C2859F32f53c4B9

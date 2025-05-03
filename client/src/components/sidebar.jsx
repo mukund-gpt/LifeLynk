@@ -1,15 +1,20 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setUser } from "../redux/AuthSlice"; 
+import { setUser } from "../redux/AuthSlice";
 
-const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => {
+const Sidebar = ({
+  openRequestFormDialog,
+  openProfileEditFormDialog,
+  a,
+  b,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user); 
+  const user = useSelector((state) => state.auth.user);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const toggleSidebar = () => {
@@ -18,7 +23,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
 
   const handleLogout = async () => {
     // Clear from Redux and localStorage
-    dispatch(setUser(null)); 
+    dispatch(setUser(null));
     localStorage.removeItem("user");
 
     try {
@@ -28,7 +33,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
       console.log("Logout error: ", err.message);
     }
 
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -56,7 +61,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
           <ul className="space-y-4">
             <li>
               <Button
-                onClick={() => navigate('/hospitalProfile')}
+                onClick={() => navigate("/hospitalProfile")}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Profile
@@ -74,7 +79,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
             )}
             <li>
               <Button
-                onClick={() => navigate('/bloodRequests')}
+                onClick={() => navigate("/bloodRequests")}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Requests
@@ -92,7 +97,7 @@ const Sidebar = ({ openRequestFormDialog, openProfileEditFormDialog, a, b }) => 
             )}
             <li>
               <Button
-                onClick={() => navigate('/donors')}
+                onClick={() => navigate("/donors")}
                 className="text-blue-600 hover:underline normal-case p-0"
               >
                 Donors

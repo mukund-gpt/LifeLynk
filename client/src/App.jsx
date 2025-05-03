@@ -13,7 +13,6 @@ import HospitalRequests from "./pages/HospitalRequests";
 import HospitalDonors from "./pages/HospitalDonors";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Contract from "./test/Contract";
 import ProfileDashboard from "./pages/ProfileDashBoard";
 import Navbar from "./components/navbar";
 import HospitalDonations from "./test/HospitalDonations";

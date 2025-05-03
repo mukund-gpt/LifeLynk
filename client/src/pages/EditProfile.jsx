@@ -3,7 +3,6 @@ import { updateUser, fetchCurrentUser } from "../apis/userApi";
 import { reverseGeocode } from "../apis/locationApi"; // Import reverseGeocode API
 import { toast } from "react-hot-toast";
 
-
 const DonorProfile = () => {
   const [donor, setDonor] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -21,17 +20,17 @@ const DonorProfile = () => {
         const accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
-  
+
         const updatedDonor = {
           ...donor,
           metaMaskId: accounts[0],
         };
-  
+
         setDonor(updatedDonor); // update state
-  
+
         // Optional: Immediately save to backend (or rely on Save button)
         // await updateUser(updatedDonor);
-  
+
         toast.success("MetaMask updated successfully!");
       } catch (err) {
         console.error("MetaMask connection error:", err);
@@ -41,12 +40,11 @@ const DonorProfile = () => {
       toast.error("MetaMask not detected");
     }
   };
-  
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      console.log("Before Saving :",donor);
+      console.log("Before Saving :", donor);
       await updateUser(donor);
       toast.success("Profile updated successfully!");
       setEditMode(false);
@@ -115,7 +113,6 @@ const DonorProfile = () => {
       try {
         const res = await fetchCurrentUser();
         setDonor(res?.data?.donor || {});
-        
       } catch (err) {
         toast.error("Failed to fetch user");
         console.error("Error fetching user:", err);
