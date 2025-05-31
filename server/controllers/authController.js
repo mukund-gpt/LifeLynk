@@ -50,7 +50,6 @@ export const signup = catchAsync(async (req, res, next) => {
     location,
     bloodGroup,
     metaMaskId,
-    licenseNumber,
     hospitalName,
   } = req.body;
 
@@ -78,7 +77,6 @@ export const signup = catchAsync(async (req, res, next) => {
       contact,
       location,
       hospitalName,
-      licenseNumber,
       metaMaskId,
     });
   } else {

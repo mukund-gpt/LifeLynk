@@ -8,38 +8,23 @@ import {
   CardContent,
   Typography,
   Divider,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
   Box,
   Grid,
   Avatar,
-  Chip,
   Paper,
-  IconButton,
-  Tooltip,
 } from "@mui/material";
 import {
-  Verified as VerifiedIcon,
-  Pending as PendingIcon,
   LocationOn,
   Email,
   Phone,
   Badge,
   MedicalServices,
   Business,
-  Edit,
-  AssignmentInd,
 } from "@mui/icons-material";
 import LoadingPage from "../components/loading";
 import { reverseGeocode } from "../apis/locationApi";
 
 const HospitalProfile = () => {
-  const [showLicenseForm, setShowLicenseForm] = useState(false);
-  const [licenseNumber, setLicenseNumber] = useState("");
   const [profileData, setProfileData] = useState({});
   const [showEditProfileForm, setShowEditProfileForm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -75,26 +60,6 @@ const HospitalProfile = () => {
 
   const openProfileEditFormDialog = () => setShowEditProfileForm(true);
   const closeProfileEditFormDialog = () => setShowEditProfileForm(false);
-
-  const handleLicenseFormSubmit = async () => {
-    try {
-      if (!licenseNumber.trim()) {
-        toast.error("License number cannot be empty");
-        return;
-      }
-
-      const res = await axios.put("/api/v1/users/updateLicense", {
-        licenseNumber,
-      });
-
-      setProfileData(res.data.updatedHospital);
-      toast.success("License number added successfully");
-      setShowLicenseForm(false);
-    } catch (err) {
-      console.error("Error updating license:", err);
-      toast.error("Failed to update license number");
-    }
-  };
 
   return (
     <Box
@@ -151,58 +116,14 @@ const HospitalProfile = () => {
                     >
                       {profileData.hospitalName || "Hospital Name"}
                     </Typography>
-                    <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
-                      {profileData.licenseNumber ? (
-                        <Chip
-                          icon={<VerifiedIcon />}
-                          label="Verified"
-                          color="success"
-                          size="small"
-                          sx={{ mr: 1 }}
-                        />
-                      ) : (
-                        <Chip
-                          icon={<PendingIcon />}
-                          label="Pending Verification"
-                          color="warning"
-                          size="small"
-                          sx={{ mr: 1 }}
-                        />
-                      )}
-                      <Tooltip title="Edit Profile">
-                        <IconButton
-                          size="small"
-                          onClick={openProfileEditFormDialog}
-                          sx={{ ml: 1 }}
-                        >
-                          <Edit fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
                   </Box>
                 </Box>
-
-                {!profileData.licenseNumber && (
-                  <Button
-                    variant="contained"
-                    startIcon={<AssignmentInd />}
-                    onClick={() => setShowLicenseForm(true)}
-                    sx={{
-                      textTransform: "none",
-                      borderRadius: 2,
-                      px: 3,
-                      py: 1,
-                    }}
-                  >
-                    Submit License
-                  </Button>
-                )}
               </Box>
 
               <Divider sx={{ my: 3 }} />
 
               <Grid container spacing={4}>
-                <Grid item xs={12} md={6}>
+                <Grid>
                   <Paper
                     elevation={0}
                     sx={{
@@ -233,22 +154,10 @@ const HospitalProfile = () => {
                         {profileData.specializations?.join(", ") || "General"}
                       </Typography>
                     </Box>
-
-                    {profileData.licenseNumber && (
-                      <Box
-                        sx={{ display: "flex", alignItems: "center", mb: 2 }}
-                      >
-                        <VerifiedIcon color="action" sx={{ mr: 2 }} />
-                        <Typography variant="body1">
-                          <strong>License No:</strong>{" "}
-                          {profileData.licenseNumber}
-                        </Typography>
-                      </Box>
-                    )}
                   </Paper>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid>
                   <Paper
                     elevation={0}
                     sx={{
@@ -287,7 +196,7 @@ const HospitalProfile = () => {
                   </Paper>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid>
                   <Paper
                     elevation={0}
                     sx={{
@@ -325,80 +234,6 @@ const HospitalProfile = () => {
           </Card>
         </Box>
       </Box>
-
-      {/* License Number Dialog */}
-      <Dialog
-        open={showLicenseForm}
-        onClose={() => setShowLicenseForm(false)}
-        maxWidth="sm"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: 3 } }}
-      >
-        <DialogTitle
-          sx={{
-            backgroundColor: "primary.main",
-            color: "common.white",
-            fontWeight: 600,
-            py: 2,
-            px: 3,
-          }}
-        >
-          Hospital License Verification
-        </DialogTitle>
-
-        <DialogContent sx={{ p: 4 }}>
-          <Typography variant="body1" sx={{ mb: 3 }}>
-            Please enter your hospital's official license number for
-            verification. This information will be reviewed by our
-            administration team.
-          </Typography>
-
-          <TextField
-            autoFocus
-            label="License Number"
-            fullWidth
-            variant="outlined"
-            margin="normal"
-            value={licenseNumber}
-            onChange={(e) => setLicenseNumber(e.target.value)}
-            InputProps={{
-              sx: { borderRadius: 2 },
-            }}
-          />
-
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ mt: 1, display: "block" }}
-          >
-            Example: MH-12345-2023 or similar format as per your region
-          </Typography>
-        </DialogContent>
-
-        <DialogActions sx={{ px: 3, py: 2 }}>
-          <Button
-            onClick={() => setShowLicenseForm(false)}
-            sx={{
-              borderRadius: 2,
-              px: 3,
-              textTransform: "none",
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleLicenseFormSubmit}
-            variant="contained"
-            sx={{
-              borderRadius: 2,
-              px: 3,
-              textTransform: "none",
-            }}
-          >
-            Submit for Verification
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

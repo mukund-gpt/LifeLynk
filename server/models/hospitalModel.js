@@ -7,9 +7,6 @@ const hospitalSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  licenseNumber: {
-    type: String,
-  },
   metaMaskId: {
     type: String,
     required: false,
