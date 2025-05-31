@@ -87,11 +87,10 @@ const DonorProfile = () => {
     <Box
       display="flex"
       justifyContent="center"
-      mt={6}
+      mt={2}
       px={2}
       sx={{
         backgroundColor: "#f1f5f9",
-        minHeight: "100vh",
       }}
     >
       <Card
@@ -110,9 +109,9 @@ const DonorProfile = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          mb={4}
+          mb={2}
           sx={{
-            gap: 3, // Spacing between avatar, name, and blood group
+            gap: 2, // Spacing between avatar, name, and blood group
             flexDirection: "column",
           }}
         >
@@ -158,7 +157,7 @@ const DonorProfile = () => {
         {/* Info Sections */}
         <CardContent>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
+            <Grid>
               <InfoSection
                 icon={<EmailIcon color="primary" />}
                 label="Email"
@@ -166,7 +165,7 @@ const DonorProfile = () => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid>
               <InfoSection
                 icon={<LocationOnIcon color="primary" />}
                 label="Location"
@@ -174,7 +173,7 @@ const DonorProfile = () => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid>
               <InfoSection
                 icon={<PeopleIcon color="primary" />}
                 label="Patients Donated To"
@@ -183,7 +182,7 @@ const DonorProfile = () => {
             </Grid>
 
             {donor.metaMaskId && (
-              <Grid item xs={12}>
+              <Grid>
                 <InfoSection
                   icon={<AccountBalanceWalletIcon color="primary" />}
                   label="MetaMask ID"

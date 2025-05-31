@@ -20,15 +20,62 @@ const Donated = () => {
 
   useEffect(() => {
     const fetchDonations = async () => {
+      if (!donorMongoId) {
+        toast.error("Donor Mongo ID not found in user data.");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const contract = await getContract();
-        if (!donorMongoId) {
-          toast.error("Donor Mongo ID not found in user data.");
-          return;
+
+        // Call contract method
+        const recordsProxy = await contract.getDonationsByDonor(donorMongoId);
+        console.log("Raw contract response:", recordsProxy);
+
+        // Convert Proxy/ethers objects to plain JS array
+        // If it’s iterable, spread it; otherwise try converting manually
+        let records = [];
+        if (
+          recordsProxy &&
+          typeof recordsProxy[Symbol.iterator] === "function"
+        ) {
+          records = [...recordsProxy];
+        } else if (Array.isArray(recordsProxy)) {
+          records = recordsProxy;
+        } else {
+          // Possibly an object - try to parse its values
+          records = Object.values(recordsProxy);
         }
-        const records = await contract.getDonationsByDonor(donorMongoId);
-        setDonations(records);
+
+        // Normalize each record: convert BigNumbers and nested structures if needed
+        const normalized = records.map((donation) => {
+          // Defensive checks for nested fields
+          const patient = donation.patient || {};
+          const hospital = donation.hospital || {};
+
+          return {
+            ...donation,
+            timestamp: donation.timestamp ? Number(donation.timestamp) : 0,
+            unitsDonated: donation.unitsDonated
+              ? Number(donation.unitsDonated)
+              : 0,
+            patient: {
+              name: patient.name || "Unknown",
+              age: patient.age || "N/A",
+              email: patient.email || "N/A",
+              contact: patient.contact || "N/A",
+            },
+            hospital: {
+              name: hospital.name || "Unknown",
+              location: hospital.location || "Unknown",
+            },
+            bloodGroup: donation.bloodGroup || "Unknown",
+          };
+        });
+
+        setDonations(normalized);
       } catch (error) {
         console.error("❌ Error fetching donation history:", error);
         toast.error("Failed to fetch your donation history");
@@ -38,7 +85,7 @@ const Donated = () => {
     };
 
     fetchDonations();
-  }, []);
+  }, [donorMongoId]);
 
   return (
     <Box>
@@ -73,9 +120,9 @@ const Donated = () => {
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         Donated on{" "}
-                        {new Date(
-                          Number(donation.timestamp) * 1000
-                        ).toLocaleString()}
+                        {donation.timestamp
+                          ? new Date(donation.timestamp * 1000).toLocaleString()
+                          : "Unknown"}
                       </Typography>
                       <Typography variant="body2">
                         Age: {donation.patient.age}
@@ -92,7 +139,7 @@ const Donated = () => {
                       </Typography>
                       <Typography variant="body2" fontWeight="bold">
                         🩸 Blood Group: {donation.bloodGroup} | 💉 Units:{" "}
-                        {Number(donation.unitsDonated)}
+                        {donation.unitsDonated}
                       </Typography>
                     </Box>
                   </Box>

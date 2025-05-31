@@ -1,10 +1,13 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import app from "./app.js";
+
 dotenv.config({ path: "./config.env" });
 
+// Handle uncaught exceptions (like undefined variables)
 process.on("uncaughtException", (err) => {
-  console.log(err);
+  console.error("UNCAUGHT EXCEPTION 💥 Shutting down...");
+  console.error(err.name, err.message);
   process.exit(1);
 });
 
@@ -12,20 +15,20 @@ if (!process.env.DATABASE) {
   throw new Error("DATABASE environment variable is not defined");
 }
 
-mongoose.connect(process.env.DATABASE).then((con) => {
-  // console.log(con.connections);
-  console.log("DB connection successful!");
+// Connect to MongoDB
+mongoose.connect(process.env.DATABASE).then(() => {
+  console.log("✅ DB connection successful!");
 });
 
-// Server setup
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
-  console.log(`App running on port ${port}`);
+  console.log(`🚀 App running on port ${port}...`);
 });
 
-//To handle any promise rejection
+// Gracefully handle unhandled promise rejections
 process.on("unhandledRejection", (err) => {
-  console.log(err);
+  console.error("UNHANDLED REJECTION 💥 Shutting down...");
+  console.error(err.name, err.message);
   server.close(() => {
     process.exit(1);
   });

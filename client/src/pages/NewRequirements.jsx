@@ -53,22 +53,16 @@ const NewRequirements = () => {
 
   useEffect(() => {
     fetchRequirements(); // Initial fetch
-
     intervalRef.current = setInterval(fetchRequirements, 500000); // Poll every 500s
-
     return () => clearInterval(intervalRef.current); // Cleanup
   }, []);
 
   const handleVolunteer = async (requestId) => {
     try {
-      const payload = {
-        id: requestId,
-        status: "booked",
-      };
-      await updateRequestStatus(payload);
+      await updateRequestStatus({ id: requestId, status: "booked" });
       toast.success("You have volunteered successfully!");
       setSelectedReq(null);
-      fetchRequirements(); // Refresh list immediately
+      fetchRequirements();
     } catch (error) {
       console.error("Error updating request status:", error);
       toast.error("Something went wrong. Try again.");
@@ -94,9 +88,17 @@ const NewRequirements = () => {
   }
 
   return (
-    <Box>
-      <Toaster position="top-right" />
-
+    <Box
+      sx={{
+        height: "90vh",
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        px: 2,
+        py: 4,
+      }}
+    >
       <Typography variant="h5" mb={3} fontWeight="bold">
         Urgent Blood Requirements
       </Typography>
@@ -106,9 +108,9 @@ const NewRequirements = () => {
           No blood requirements found.
         </Typography>
       ) : (
-        <Grid container spacing={3}>
-          {requirements.map((req, idx) => (
-            <Grid item xs={12} md={6} key={idx}>
+        <Grid container spacing={3} justifyContent="center">
+          {requirements.map((req) => (
+            <Grid key={req._id}>
               <Card
                 sx={{
                   p: 3,

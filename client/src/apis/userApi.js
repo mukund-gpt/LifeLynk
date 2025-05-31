@@ -12,17 +12,16 @@ export const loginUser = async (email, password) => {
     console.error("Error logging in:", err.message);
   }
 };
-
 //registr user
 export const registerUser = async (formData, role) => {
   try {
     const cleanData = { ...formData, role };
     if (role === "hospital") delete cleanData.bloodGroup;
-    console.log(cleanData);
-    const response = await axios.post("/api/v1/users/signup", cleanData);
-    return response.data;
+
+    const res = await axios.post("/api/v1/users/signup", cleanData);
+    return res.data; // contains .status === "success"
   } catch (err) {
-    console.log(err.message);
+    throw err; // Let handleSubmit deal with it
   }
 };
 

@@ -60,22 +60,28 @@ const Register = () => {
         ...(location && { location }),
       };
 
-      await registerUser(dataToSend, role);
+      const result = await registerUser(dataToSend, role);
 
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        passwordConfirm: "",
-        contact: "",
-        bloodGroup: "",
-        hospitalName: "",
-      });
-
-      setLocation(null);
-      setAddress("");
+      // Only clear form if result is successful (non-null and has expected data)
+      if (result && result.status === "success") {
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          passwordConfirm: "",
+          contact: "",
+          bloodGroup: "",
+          hospitalName: "",
+        });
+        setLocation(null);
+        setAddress("");
+        toast.success("Registration successful!");
+        navigate("/login");
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response?.data?.message || error.message || "Registration failed"
+      );
     }
   };
 
