@@ -177,7 +177,7 @@ export const createRequestAndSendEmail = async (req, res) => {
       await sendMail(
         donor.email,
         "Urgent Blood Donation Needed",
-        `Dear ${donor.name},\n\nWe urgently need blood group ${bloodGroup} at ${hospitalDetails.name}. Your help can save a life!\n\nRegards,\n${hospitalDetails.name} Team`
+        `Dear ${donor.name},\n\nWe urgently need blood group ${bloodGroup} at ${hospitalDetails.name}. Your help can save a life!\n\nPlease visit the following link for more details:\nhttp://localhost:5173/dashboard/requirements\n\nRegards,\n${hospitalDetails.name} Team`
       );
     }
 
