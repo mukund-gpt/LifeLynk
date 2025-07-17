@@ -29,7 +29,7 @@ export const registerUser = async (formData, role) => {
 // fetch current user
 export const fetchCurrentUser = async () => {
   try {
-    const res = await axios.get("/api/v1/users/");
+    const res = await axios.get("/api/v1/users");
     return res.data;
   } catch (err) {
     console.error("Error fetching current user:", err.message);
