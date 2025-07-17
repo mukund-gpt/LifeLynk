@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+import toast from "react-hot-toast";
 import { getContract } from "../contracts/contract";
 
 export const recordDonationOnChain = async (requestToLog) => {
@@ -8,6 +10,13 @@ export const recordDonationOnChain = async (requestToLog) => {
 
   try {
     const contract = await getContract();
+    console.log(requestToLog);
+
+    const donorAddress = requestToLog.donor?.metaMaskId;
+    if (!donorAddress || !ethers.isAddress(donorAddress)) {
+      toast.error("Invalid or missing donor Ethereum address");
+      return false;
+    }
 
     const donor = {
       name: requestToLog.donor.name,
@@ -18,7 +27,7 @@ export const recordDonationOnChain = async (requestToLog) => {
 
     const patient = {
       name: requestToLog.patientName,
-      age: 0,
+      age: requestToLog.age,
       email: "",
       contact: requestToLog.contactNumber,
     };

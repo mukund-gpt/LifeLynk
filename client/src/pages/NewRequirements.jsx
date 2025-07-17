@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Typography,
   Card,
@@ -15,7 +15,7 @@ import {
   getAllOpenRequests,
   updateRequestStatus,
 } from "../apis/requirementsApi";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 const modalStyle = {
   position: "absolute",

@@ -100,7 +100,7 @@ const Donated = () => {
       ) : (
         <Grid container spacing={3}>
           {donations.map((donation, idx) => (
-            <Grid item xs={12} md={6} key={idx}>
+            <Grid key={idx}>
               <Card
                 sx={{
                   p: 2,

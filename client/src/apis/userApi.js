@@ -9,7 +9,8 @@ export const loginUser = async (email, password) => {
     });
     return response.data;
   } catch (err) {
-    console.error("Error logging in:", err.message);
+    console.error("Error logging in:", err.response?.data || err.message);
+    throw err;
   }
 };
 //registr user

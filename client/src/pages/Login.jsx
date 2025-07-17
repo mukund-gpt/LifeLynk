@@ -49,7 +49,6 @@ const LoginPage = () => {
         navigate("/login");
       }
     } catch (err) {
-      console.error("🔥 Login error:", err);
       toast.error(
         err.response?.data?.message || "Login failed. Please try again."
       );
