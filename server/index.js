@@ -20,6 +20,10 @@ mongoose.connect(process.env.DATABASE).then(() => {
   console.log("✅ DB connection successful!");
 });
 
+app.get("/", (req, res) => {
+  return res.send("Welcome to LifeLynk API");
+});
+
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   console.log(`🚀 App running on port ${port}...`);
